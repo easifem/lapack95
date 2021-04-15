@@ -5,89 +5,44 @@ LAPACK95 is a Fortran95 interface to LAPACK. This repository provides a facility
 #### The HTML version of the LAPACK95 Users' Guide is now available, [here](http://www.netlib.org/lapack95/lug95/).
 #### Index of LAPACK95 routines is [here](http://www.netlib.org/lapack95/L90index/L90index.html)
 
+### Table of contents
+- [LAPACK95](#lapack95)
+      - [The HTML version of the LAPACK95 Users' Guide is now available, here.](#the-html-version-of-the-lapack95-users-guide-is-now-available-here)
+      - [Index of LAPACK95 routines is here](#index-of-lapack95-routines-is-here)
+    - [Table of contents](#table-of-contents)
+  - [Build](#build)
+    - [CMake](#cmake)
+    - [Python](#python)
+  - [Examples](#examples)
+
 ## Build
 
-the options `-Darith=` sets which precision to build (default `d`):
-
-* `s`: float32
-* `d`: float64
-* `c`: complex32
-* `z`: complex64
-
-Build with CMake and a Fortran compiler.
-The build yields:
-
-* `LAPACK95/liblapack95.a`
-* Fortran module files in `LAPACK95/include/*.mod`.
+- The build process produces library called `liblapack95` and modules. The archive library can be shared or static.
+- The library is build for single and double precision.
+- Complex data type is not included.
 
 ### CMake
 
-```sh
-cmake -B build
-cmake --build build
-```
+Following options are defined:
 
-### Meson
-
-```sh
-meson setup build
-
-meson compile -C build
-```
-
-## Install
-
-suppose you wish to install under `~/.local/lapack95`
-
-### CMake
+- `-DUSE_OPENMP=ON/OFF` : to enable and disable openmp
+- `-DCMAKE_BUILD_TYPE=Release/Debug` for release or debug type build
+- `BUILD_SHARED_LIBS=ON/OFF` to build shared or static lib
+- `-DCMAKE_INSTALL_PREFIX`, location of the install directory
 
 ```sh
-cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -B build
-
-cmake --build build --parallel
-
-cmake --install build
+git clone https://github.com/vickysharma0812/LAPACK95.git
+cd LAPACK95
+cmake -DUSE_OPENMP=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=${EASIFEM_EXTPKGS} -S ./ -B ./build
+cmake --build ./build --target install
 ```
 
-### Meson
+### Python
 
 ```sh
-meson setup build --prefix=$HOME/.local
-
-meson install -C build
-```
-
-This also installs the PkgConfig generated `~/.local/lib/pkgconfig/lapack95.pc`
-Check that this directory is in `echo $PKG_CONFIG_PATH` and if not, add to ~/.bashrc:
-
-```sh
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/.local/lib/pkgconfig
-```
-
-## Use in a cmake project
-
-This library can be used inside a cmake project by adding this repository with `add_subdirectory`.
-One can for example use
-[FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html) in your existing project:
-```cmake
-cmake_minimum_required(VERSION 3.11)
-
-project(myproject Fortran)
-
-include(FetchContent)
-FetchContent_Declare(
-    lapack95
-    GIT_REPOSITORY https://github.com/scivision/LAPACK95.git
-)
-
-FetchContent_GetProperties(lapack95)
-if(NOT lapack95_POPULATED)
-    FetchContent_Populate(lapack95)
-    add_subdirectory(${lapack95_SOURCE_DIR})
-endif()
-
-add_executable(myexe ${CMAKE_CURRENT_SOURCE_DIR}/myexe.f90)
-target_link_libraries(myexe ${LAPACK_LIBRARIES} lapack95)
+git clone https://github.com/vickysharma0812/LAPACK95.git
+cd LAPACK95
+python3 install.py
 ```
 
 ## Examples
