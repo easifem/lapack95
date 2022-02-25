@@ -115,7 +115,7 @@ ${src_path}/la_zheevr.f90 ${src_path}/la_zggevx.f90 ${src_path}/la_zhegvx.f90 ${
 ${src_path}/la_zgesdd.f90
 )
 
-target_sources(
+TARGET_SOURCES(
   ${PROJECT_NAME} PRIVATE
   ${src_path}/la_auxmod.f90
   ${src_path}/la_erinfo.f90
@@ -126,6 +126,6 @@ target_sources(
   ${l95_src}
 )
 
-TARGET_SOURCES(
-  ${PROJECT_NAME} PRIVATE
-  ${l95_src})
+# TARGET_SOURCES(
+#   ${PROJECT_NAME} PRIVATE
+#   ${l95_src})
