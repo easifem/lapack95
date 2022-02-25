@@ -107,12 +107,8 @@ ENDIF()
 INCLUDE(${CMAKE_SOURCE_DIR}/src/CMakeLists.txt)
 ###################################################
 
-# install openblas
-IF(NOT CMAKE_PREFIX_PATH)
-  SET(CMAKE_PREFIX_PATH "$ENV{EASIFEM_EXTPKGS}")
-ENDIF()
-
-SET(BLA_VENDOR "OpenBLAS")
+#install blas
+#SET(BLA_VENDOR "OpenBLAS")
 FIND_PACKAGE( LAPACK REQUIRED )
 IF( LAPACK_FOUND )
   MESSAGE(STATUS "LAPACK_LIBRARIES found")
