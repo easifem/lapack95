@@ -1,4 +1,5 @@
-      SUBROUTINE SLAGGE_F95( A, KL, KU, D, ISEED, INFO )
+#ifdef NO_LAGGE_BUG
+SUBROUTINE SLAGGE_F95( A, KL, KU, D, ISEED, INFO )
 !
 !  -- LAPACK95 interface driver routine (version 3.0) --
 !     UNI-C, Denmark; Univ. of Tennessee, USA; NAG Ltd., UK
@@ -119,3 +120,4 @@
       ENDIF
       CALL ERINFO( LINFO, SRNAME, INFO, ISTAT )
       END SUBROUTINE SLAGGE_F95
+#endif

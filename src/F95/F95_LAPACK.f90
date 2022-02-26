@@ -4476,6 +4476,12 @@ END SUBROUTINE ZPOTRF_F95
 
 END INTERFACE
 
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+#ifdef NO_LAGGE_BUG
+
 INTERFACE LAGGE
 
 SUBROUTINE SLAGGE_F95( A, KL, KU, D, ISEED, INFO )
@@ -4515,6 +4521,12 @@ SUBROUTINE ZLAGGE_F95( A, KL, KU, D, ISEED, INFO )
 END SUBROUTINE ZLAGGE_F95
 
 END INTERFACE
+
+#endif
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
 
 INTERFACE LANGE
 
