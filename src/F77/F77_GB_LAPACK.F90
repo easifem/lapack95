@@ -1,0 +1,1015 @@
+! This program is a part of EASIFEM library
+! Copyright (C) 2020-2021  Vikas Sharma, Ph.D
+!
+! This program is free software: you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation, either version 3 of the License, or
+! (at your option) any later version.
+!
+! This program is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! You should have received a copy of the GNU General Public License
+! along with this program.  If not, see <https: //www.gnu.org/licenses/>
+!
+
+MODULE F77_GB_LAPACK
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBSV
+
+  SUBROUTINE SGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: PIV(*)
+    REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+  END SUBROUTINE SGBSV
+
+  SUBROUTINE DGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: PIV(*)
+    REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+  END SUBROUTINE DGBSV
+
+  SUBROUTINE CGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: PIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+  END SUBROUTINE CGBSV
+
+  SUBROUTINE ZGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: PIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+  END SUBROUTINE ZGBSV
+
+  MODULE PROCEDURE SGBSV1
+  MODULE PROCEDURE DGBSV1
+  MODULE PROCEDURE CGBSV1
+  MODULE PROCEDURE ZGBSV1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBSVX
+
+  SUBROUTINE SGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+    & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+    & FERR, BERR, WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+    CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(INOUT) :: PIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+    REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    REAL(WP), INTENT(INOUT) :: R(*), C(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+  END SUBROUTINE SGBSVX
+
+  SUBROUTINE DGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+    & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+    & FERR, BERR, WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+    CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(INOUT) :: PIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+    REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    REAL(WP), INTENT(INOUT) :: R(*), C(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+  END SUBROUTINE DGBSVX
+
+  SUBROUTINE CGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+    & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+    & FERR, BERR, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+    CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: PIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    REAL(WP), INTENT(INOUT) :: R(*), C(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+  END SUBROUTINE CGBSVX
+
+  SUBROUTINE ZGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+    & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+    & FERR, BERR, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+    CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: PIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    REAL(WP), INTENT(INOUT) :: R(*), C(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+  END SUBROUTINE ZGBSVX
+
+  MODULE PROCEDURE SGBSVX1
+  MODULE PROCEDURE DGBSVX1
+  MODULE PROCEDURE CGBSVX1
+  MODULE PROCEDURE ZGBSVX1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBBRD
+
+  SUBROUTINE SGBBRD(VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, &
+    & LDQ, PT, LDPT, C, LDC, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: VECT
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDC, LDPT, LDQ, M, N, NCC
+    INTEGER, INTENT(OUT) :: INFO
+    REAL, INTENT(OUT) :: D(*), E(*)
+    REAL(WP), INTENT(INOUT) :: AB(LDAB, *), C(LDC, *)
+    REAL(WP), INTENT(OUT) :: PT(LDPT, *), Q(LDQ, *), WORK(*)
+  END SUBROUTINE SGBBRD
+
+  SUBROUTINE DGBBRD(VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, &
+    & LDQ, PT, LDPT, C, LDC, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: VECT
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDC, LDPT, LDQ, M, N, NCC
+    INTEGER, INTENT(OUT) :: INFO
+    REAL, INTENT(OUT) :: D(*), E(*)
+    REAL(WP), INTENT(INOUT) :: AB(LDAB, *), C(LDC, *)
+    REAL(WP), INTENT(OUT) :: PT(LDPT, *), Q(LDQ, *), WORK(*)
+  END SUBROUTINE DGBBRD
+
+  SUBROUTINE CGBBRD(VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, &
+    & LDQ, PT, LDPT, C, LDC, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: VECT
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDC, LDPT, LDQ, M, N, NCC
+    INTEGER, INTENT(OUT) :: INFO
+    REAL, INTENT(OUT) :: D(*), E(*), RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), C(LDC, *)
+    COMPLEX(WP), INTENT(OUT) :: PT(LDPT, *), Q(LDQ, *), WORK(*)
+  END SUBROUTINE CGBBRD
+
+  SUBROUTINE ZGBBRD(VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, &
+    & LDQ, PT, LDPT, C, LDC, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: VECT
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDC, LDPT, LDQ, M, N, NCC
+    INTEGER, INTENT(OUT) :: INFO
+    REAL, INTENT(OUT) :: D(*), E(*), RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), C(LDC, *)
+    COMPLEX(WP), INTENT(OUT) :: PT(LDPT, *), Q(LDQ, *), WORK(*)
+  END SUBROUTINE ZGBBRD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBEQU
+
+  SUBROUTINE SGBEQU(M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND,  &
+    & AMAX, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: AMAX, COLCND, ROWCND
+    REAL(WP), INTENT(OUT) :: C(*), R(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *)
+  END SUBROUTINE SGBEQU
+
+  SUBROUTINE DGBEQU(M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND,  &
+    & AMAX, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: AMAX, COLCND, ROWCND
+    REAL(WP), INTENT(OUT) :: C(*), R(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *)
+  END SUBROUTINE DGBEQU
+
+  SUBROUTINE CGBEQU(M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND,  &
+    & AMAX, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: AMAX, COLCND, ROWCND
+    REAL(WP), INTENT(OUT) :: C(*), R(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *)
+  END SUBROUTINE CGBEQU
+
+  SUBROUTINE ZGBEQU(M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND,  &
+    & AMAX, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: AMAX, COLCND, ROWCND
+    REAL(WP), INTENT(OUT) :: C(*), R(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *)
+  END SUBROUTINE ZGBEQU
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBRFS
+
+  SUBROUTINE SGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB,  &
+    & IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE SGBRFS
+
+  SUBROUTINE DGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB,  &
+    & IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE DGBRFS
+
+  SUBROUTINE CGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB,  &
+    & IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *),         &
+    & B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE CGBRFS
+
+  SUBROUTINE ZGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB,  &
+    & IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *),         &
+    & B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE ZGBRFS
+
+  MODULE PROCEDURE SGBRFS1
+  MODULE PROCEDURE DGBRFS1
+  MODULE PROCEDURE CGBRFS1
+  MODULE PROCEDURE ZGBRFS1
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBCON
+
+  SUBROUTINE SGBCON(NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, &
+    & WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: NORM
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SGBCON
+
+  SUBROUTINE DGBCON(NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, &
+    & WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: NORM
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DGBCON
+
+  SUBROUTINE CGBCON(NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, &
+    & WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: NORM
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CGBCON
+
+  SUBROUTINE ZGBCON(NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, &
+    & WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: NORM
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZGBCON
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBTRS
+
+  SUBROUTINE SGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *)
+    REAL(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE SGBTRS
+
+  SUBROUTINE DGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(IN) :: AB(LDAB, *)
+    REAL(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE DGBTRS
+
+  SUBROUTINE CGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *)
+    COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE CGBTRS
+
+  SUBROUTINE ZGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: TRANS
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: AB(LDAB, *)
+    COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE ZGBTRS
+
+  MODULE PROCEDURE SGBTRS1
+  MODULE PROCEDURE DGBTRS1
+  MODULE PROCEDURE CGBTRS1
+  MODULE PROCEDURE ZGBTRS1
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GBTRF
+
+  SUBROUTINE SGBTRF(M, N, KL, KU, AB, LDAB, IPIV, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: AB(LDAB, *)
+  END SUBROUTINE SGBTRF
+
+  SUBROUTINE DGBTRF(M, N, KL, KU, AB, LDAB, IPIV, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: AB(LDAB, *)
+  END SUBROUTINE DGBTRF
+
+  SUBROUTINE CGBTRF(M, N, KL, KU, AB, LDAB, IPIV, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *)
+  END SUBROUTINE CGBTRF
+
+  SUBROUTINE ZGBTRF(M, N, KL, KU, AB, LDAB, IPIV, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: KL, KU, LDAB, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *)
+  END SUBROUTINE ZGBTRF
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+CONTAINS
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SGBSV1(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: PIV(*)
+  REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE SGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(OUT) :: PIV(*)
+      REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE SGBSV
+  END INTERFACE
+  CALL SGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+END SUBROUTINE SGBSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DGBSV1(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: PIV(*)
+  REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE DGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(OUT) :: PIV(*)
+      REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE DGBSV
+  END INTERFACE
+  CALL DGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+END SUBROUTINE DGBSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CGBSV1(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: PIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE CGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(OUT) :: PIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE CGBSV
+  END INTERFACE
+  CALL CGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+END SUBROUTINE CGBSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZGBSV1(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: PIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE ZGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, NRHS, N
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(OUT) :: PIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE ZGBSV
+  END INTERFACE
+  CALL ZGBSV(N, KL, KU, NRHS, AB, LDAB, PIV, B, LDB, INFO)
+END SUBROUTINE ZGBSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SGBSVX1(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+  &LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+  &FERR, BERR, WORK, IWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+  CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: IWORK(*)
+  INTEGER, INTENT(INOUT) :: PIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR
+  REAL(WP), INTENT(OUT) :: X(*), WORK(*)
+  REAL(WP), INTENT(INOUT) :: R(*), C(*)
+  REAL(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(*)
+  INTERFACE
+    SUBROUTINE SGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+      & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX,   &
+      & RCOND, FERR, BERR, WORK, IWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+      CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+      INTEGER, INTENT(OUT) :: INFO
+!
+      INTEGER, INTENT(OUT) :: IWORK(*)
+      INTEGER, INTENT(INOUT) :: PIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+      REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      REAL(WP), INTENT(INOUT) :: R(*), C(*)
+      REAL(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    END SUBROUTINE SGBSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL SGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, LDAF,   &
+    &PIV, EQUED, R, C, B, LDB, X, LDX, RCOND, LFERR,   &
+    &LBERR, WORK, IWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE SGBSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DGBSVX1(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+  &LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+  &FERR, BERR, WORK, IWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+  CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: IWORK(*)
+  INTEGER, INTENT(INOUT) :: PIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR
+  REAL(WP), INTENT(OUT) :: X(*), WORK(*)
+  REAL(WP), INTENT(INOUT) :: R(*), C(*)
+  REAL(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(*)
+  INTERFACE
+    SUBROUTINE DGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+      & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX,   &
+      & RCOND, FERR, BERR, WORK, IWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+      CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+      INTEGER, INTENT(OUT) :: INFO
+!
+      INTEGER, INTENT(OUT) :: IWORK(*)
+      INTEGER, INTENT(INOUT) :: PIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+      REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      REAL(WP), INTENT(INOUT) :: R(*), C(*)
+      REAL(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    END SUBROUTINE DGBSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL DGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, LDAF,   &
+    &PIV, EQUED, R, C, B, LDB, X, LDX, RCOND, LFERR,   &
+    &LBERR, WORK, IWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE DGBSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CGBSVX1(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+  &LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+  &FERR, BERR, WORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+  CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: PIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR, RWORK(*)
+  COMPLEX(WP), INTENT(OUT) :: X(*), WORK(*)
+  REAL(WP), INTENT(INOUT) :: R(*), C(*)
+  COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(*)
+  INTERFACE
+    SUBROUTINE CGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+      & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX,   &
+      & RCOND, FERR, BERR, WORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+      CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: PIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      REAL(WP), INTENT(INOUT) :: R(*), C(*)
+      COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    END SUBROUTINE CGBSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL CGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, LDAF,   &
+    &PIV, EQUED, R, C, B, LDB, X, LDX, RCOND, LFERR,   &
+    &LBERR, WORK, RWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE CGBSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZGBSVX1(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+  &LDAF, PIV, EQUED, R, C, B, LDB, X, LDX, RCOND,&
+  &FERR, BERR, WORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+  CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: PIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR, RWORK(*)
+  COMPLEX(WP), INTENT(OUT) :: X(*), WORK(*)
+  REAL(WP), INTENT(INOUT) :: R(*), C(*)
+  COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(*)
+  INTERFACE
+    SUBROUTINE ZGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, &
+      & LDAF, PIV, EQUED, R, C, B, LDB, X, LDX,   &
+      & RCOND, FERR, BERR, WORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS, FACT
+      CHARACTER(LEN=1), INTENT(INOUT) :: EQUED
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, KL, KU
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: PIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      REAL(WP), INTENT(INOUT) :: R(*), C(*)
+      COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    END SUBROUTINE ZGBSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL ZGBSVX(FACT, TRANS, N, KL, KU, NRHS, A, LDA, AF, LDAF,   &
+    &PIV, EQUED, R, C, B, LDB, X, LDX, RCOND, LFERR,   &
+    &LBERR, WORK, RWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE ZGBSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SGBRFS1(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+  &IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK,&
+  &INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  INTEGER, INTENT(OUT) :: IWORK(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR
+  REAL(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *), B(*)
+  REAL(WP), INTENT(OUT) :: WORK(*)
+  REAL(WP), INTENT(INOUT) :: X(*)
+  INTERFACE
+    SUBROUTINE SGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB,   &
+      &  LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, &
+      &  WORK, IWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, &
+        & NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      INTEGER, INTENT(OUT) :: IWORK(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+      REAL(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *),      &
+        &  B(LDB, *)
+      REAL(WP), INTENT(OUT) :: WORK(*)
+      REAL(WP), INTENT(INOUT) :: X(LDX, *)
+    END SUBROUTINE SGBRFS
+  END INTERFACE
+  REAL(WP) :: FERR1(1), BERR1(1)
+  CALL SGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+    &IPIV, B, LDB, X, LDX, FERR1, BERR1, WORK, IWORK,  &
+    &INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE SGBRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DGBRFS1(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+  &IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK,&
+  &INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  INTEGER, INTENT(OUT) :: IWORK(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR
+  REAL(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *), B(*)
+  REAL(WP), INTENT(OUT) :: WORK(*)
+  REAL(WP), INTENT(INOUT) :: X(*)
+  INTERFACE
+    SUBROUTINE DGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB,   &
+      &  LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, &
+      &  WORK, IWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, &
+        & NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      INTEGER, INTENT(OUT) :: IWORK(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+      REAL(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *),      &
+        &  B(LDB, *)
+      REAL(WP), INTENT(OUT) :: WORK(*)
+      REAL(WP), INTENT(INOUT) :: X(LDX, *)
+    END SUBROUTINE DGBRFS
+  END INTERFACE
+  REAL(WP) :: FERR1(1), BERR1(1)
+  CALL DGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+    &IPIV, B, LDB, X, LDX, FERR1, BERR1, WORK, IWORK,  &
+    &INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE DGBRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CGBRFS1(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+  &IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK,&
+  &INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR, RWORK(*)
+  COMPLEX(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *), B(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  COMPLEX(WP), INTENT(INOUT) :: X(*)
+  INTERFACE
+    SUBROUTINE CGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB,   &
+      &  LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, &
+      &  WORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, &
+        & NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *),   &
+      &B(LDB, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+      COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+    END SUBROUTINE CGBRFS
+  END INTERFACE
+  REAL(WP) :: FERR1(1), BERR1(1)
+  CALL CGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+    &IPIV, B, LDB, X, LDX, FERR1, BERR1, WORK, RWORK,  &
+    &INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE CGBRFS1
+SUBROUTINE ZGBRFS1(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+  &IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK,&
+  &INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR, RWORK(*)
+  COMPLEX(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *), B(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  COMPLEX(WP), INTENT(INOUT) :: X(*)
+  INTERFACE
+    SUBROUTINE ZGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB,   &
+      &  LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, &
+      &  WORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDAFB, LDB, LDX, N, &
+        & NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(IN) :: AB(LDAB, *), AFB(LDAFB, *),   &
+      &B(LDB, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+      COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+    END SUBROUTINE ZGBRFS
+  END INTERFACE
+  REAL(WP) :: FERR1(1), BERR1(1)
+  CALL ZGBRFS(TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, &
+    &IPIV, B, LDB, X, LDX, FERR1, BERR1, WORK, RWORK,  &
+    &INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE ZGBRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SGBTRS1(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, &
+  &LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE SGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV,  &
+      &  B, LDB, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE SGBTRS
+  END INTERFACE
+  CALL SGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,   &
+    &INFO)
+END SUBROUTINE SGBTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DGBTRS1(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, &
+  &LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE DGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV,  &
+      &  B, LDB, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE DGBTRS
+  END INTERFACE
+  CALL DGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,   &
+    &INFO)
+END SUBROUTINE DGBTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CGBTRS1(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, &
+  &LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE CGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV,  &
+      &  B, LDB, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE CGBTRS
+  END INTERFACE
+  CALL CGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,   &
+    &INFO)
+END SUBROUTINE CGBTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZGBTRS1(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, &
+  &LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: TRANS
+  INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(*)
+  INTERFACE
+    SUBROUTINE ZGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV,  &
+      &  B, LDB, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: TRANS
+      INTEGER, INTENT(IN) :: KL, KU, LDAB, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: AB(LDAB, *), B(LDB, *)
+    END SUBROUTINE ZGBTRS
+  END INTERFACE
+  CALL ZGBTRS(TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB,   &
+    &INFO)
+END SUBROUTINE ZGBTRS1
+
+END MODULE F77_GB_LAPACK

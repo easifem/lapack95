@@ -11,29 +11,34 @@ import platform
 def installRequest(LIB):
     while True:
         choice = input(f"Do you want to Install {LIB} 'yes' or 'no' [Y/n]: ")
-        if(choice == " "):
-          choice = "no"
+        if choice == " ":
+            choice = "no"
         else:
-          choice = choice.lower()
-        if choice in ['Y', 'y', 'ye', 'yes']:
-          return True
+            choice = choice.lower()
+        if choice in ["Y", "y", "ye", "yes"]:
+            return True
         else:
-          return False
+            return False
 
 
 def getOption(key, opt):
-  while True:
-    separator = ', '
-    return input(f"select option for {key}, possible options are : {separator.join(opt)} : ") + " "
+    while True:
+        separator = ", "
+        return (
+            input(
+                f"select option for {key}, possible options are : {separator.join(opt)} : "
+            )
+            + " "
+        )
 
 
 print("Detecting OS type...")
 _os = platform.system()
-if _os == 'Windows':
+if _os == "Windows":
     print("ERROR: INSTALLATION on windows is work in progress")
     exit
-    #print("Please use Windows Subsystem Linux(WSL) ")
-    #print("Installation DONE!!")
+    # print("Please use Windows Subsystem Linux(WSL) ")
+    # print("Installation DONE!!")
 else:
     # if(installRequest("OpenBLAS")):
     #   print("====================================")
@@ -51,42 +56,42 @@ else:
 
     user_query = False
     if user_query:
-      cmake_def = ""
-      opt = getOption("USE_OpenMP", ["ON", "OFF"])
-      if(opt == " "):
-          opt = "ON"
-      cmake_def += " -DUSE_OpenMP=" + opt
-      #
-      #
-      #
-      opt = getOption("CMAKE_BUILD_TYPE", ["Release", "Debug"])
-      if(opt == " "):
-          opt = "Release"
-      cmake_def += " -DCMAKE_BUILD_TYPE=" + opt
-      #
-      #
-      #
-      opt = getOption("BUILD_SHARED_LIBS", ["ON", "OFF"])
-      if(opt == " "):
-          opt = "ON"
-      cmake_def += " -DBUILD_SHARED_LIBS=" + opt
-      #
-      #
-      #
-      opt = getOption("CMAKE_INSTALL_PREFIX", ["${PREFIX}"])
-      if(opt == " "):
-          #   opt = "${HOME}/PENF"
-          opt = "${EASIFEM_EXTPKGS}"
-      cmake_def += " -DCMAKE_INSTALL_PREFIX=" + opt
-      #
-      #
-      #
-      cmake_def += " -DUSE_Int32=ON -DUSE_Real64=ON"
-      #
-      #
-      #
+        cmake_def = ""
+        opt = getOption("USE_OpenMP", ["ON", "OFF"])
+        if opt == " ":
+            opt = "ON"
+        cmake_def += " -D USE_OpenMP=" + opt
+        #
+        #
+        #
+        opt = getOption("CMAKE_BUILD_TYPE", ["Release", "Debug"])
+        if opt == " ":
+            opt = "Release"
+        cmake_def += " -D CMAKE_BUILD_TYPE=" + opt
+        #
+        #
+        #
+        opt = getOption("BUILD_SHARED_LIBS", ["ON", "OFF"])
+        if opt == " ":
+            opt = "ON"
+        cmake_def += " -D BUILD_SHARED_LIBS=" + opt
+        #
+        #
+        #
+        opt = getOption("CMAKE_INSTALL_PREFIX", ["${PREFIX}"])
+        if opt == " ":
+            #   opt = "${HOME}/PENF"
+            opt = "${EASIFEM_EXTPKGS}"
+        cmake_def += " -D CMAKE_INSTALL_PREFIX=" + opt
+        #
+        #
+        #
+        cmake_def += " -D USE_Int32=ON -D USE_Real64=ON"
+        #
+        #
+        #
     else:
-      cmake_def = ' -G "Unix Makefiles" -DUSE_OpenMP:BOOL=ON -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SHARED_LIBS:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=${EASIFEM_EXTPKGS} -DUSE_Int32:BOOL=ON -DUSE_Real64:BOOL=ON'
+        cmake_def = ' -G "Ninja" -D USE_OpenMP:BOOL=ON -D CMAKE_BUILD_TYPE:STRING=Release -D BUILD_SHARED_LIBS:BOOL=ON  -D CMAKE_INSTALL_PREFIX:PATH=${EASIFEM_EXTPKGS} -D USE_Int32:BOOL=ON -D USE_Real64:BOOL=ON'
 
     print("CMAKE DEF : ", cmake_def)
 

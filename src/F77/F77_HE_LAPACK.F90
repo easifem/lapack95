@@ -1,0 +1,806 @@
+! This program is a part of EASIFEM library
+! Copyright (C) 2020-2021  Vikas Sharma, Ph.D
+!
+! This program is free software: you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation, either version 3 of the License, or
+! (at your option) any later version.
+!
+! This program is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! You should have received a copy of the GNU General Public License
+! along with this program.  If not, see <https: //www.gnu.org/licenses/>
+!
+
+MODULE F77_HE_LAPACK
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HETRI
+
+  SUBROUTINE CHETRI(UPLO, N, A, LDA, IPIV, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHETRI
+
+  SUBROUTINE ZHETRI(UPLO, N, A, LDA, IPIV, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHETRI
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HERFS
+
+  SUBROUTINE CHERFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, &
+    & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHERFS
+
+  SUBROUTINE ZHERFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, &
+    & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHERFS
+
+  MODULE PROCEDURE CHERFS1
+  MODULE PROCEDURE ZHERFS1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HECON
+
+  SUBROUTINE CHECON(UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHECON
+
+  SUBROUTINE ZHECON(UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHECON
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HETRS
+
+  SUBROUTINE CHETRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE CHETRS
+
+  SUBROUTINE ZHETRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE ZHETRS
+
+  MODULE PROCEDURE CHETRS1
+  MODULE PROCEDURE ZHETRS1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HETRF
+
+  SUBROUTINE CHETRF(UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(LWORK)
+  END SUBROUTINE CHETRF
+
+  SUBROUTINE ZHETRF(UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(LWORK)
+  END SUBROUTINE ZHETRF
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HESV
+
+  SUBROUTINE CHESV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHESV
+
+  SUBROUTINE ZHESV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHESV
+
+  MODULE PROCEDURE CHESV1
+  MODULE PROCEDURE ZHESV1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HESVX
+
+  SUBROUTINE CHESVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  & B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  & LWORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  END SUBROUTINE CHESVX
+
+  SUBROUTINE ZHESVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  & B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  & LWORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  END SUBROUTINE ZHESVX
+
+  MODULE PROCEDURE CHESVX1
+  MODULE PROCEDURE ZHESVX1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEEV
+
+  SUBROUTINE CHEEV(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, &
+  & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHEEV
+
+  SUBROUTINE ZHEEV(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, &
+  & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHEEV
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEEVD
+
+  SUBROUTINE CHEEVD(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, &
+  & LRWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LIWORK, LWORK, N, LRWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHEEVD
+
+  SUBROUTINE ZHEEVD(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, &
+  & LRWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LIWORK, LWORK, N, LRWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHEEVD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEEVR
+
+  SUBROUTINE CHEEVR(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+  & ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, &
+  & RWORK, LRWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: N, IL, IU, LDZ, LDA, LWORK, LIWORK, LRWORK
+    INTEGER, INTENT(OUT) :: M
+    INTEGER, INTENT(OUT) :: ISUPPZ(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+  END SUBROUTINE CHEEVR
+
+  SUBROUTINE ZHEEVR(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+  & ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, &
+  & RWORK, LRWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: N, IL, IU, LDZ, LDA, LWORK, LIWORK, LRWORK
+    INTEGER, INTENT(OUT) :: M
+    INTEGER, INTENT(OUT) :: ISUPPZ(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+  END SUBROUTINE ZHEEVR
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEEVX
+
+  SUBROUTINE CHEEVX(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+  & ABSTOL, M, W, Z, LDZ, WORK, LWORK, RWORK, &
+  & IWORK, IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: IL, IU, LDA, LDZ, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, M
+    INTEGER, INTENT(OUT) :: IFAIL(*), IWORK(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+  END SUBROUTINE CHEEVX
+
+  SUBROUTINE ZHEEVX(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+  & ABSTOL, M, W, Z, LDZ, WORK, LWORK, RWORK, &
+  & IWORK, IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: IL, IU, LDA, LDZ, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, M
+    INTEGER, INTENT(OUT) :: IFAIL(*), IWORK(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+  END SUBROUTINE ZHEEVX
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEGST
+
+  SUBROUTINE CHEGST(ITYPE, UPLO, N, A, LDA, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(IN) :: B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE CHEGST
+
+  SUBROUTINE ZHEGST(ITYPE, UPLO, N, A, LDA, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(IN) :: B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE ZHEGST
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEGV
+
+  SUBROUTINE CHEGV(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, &
+  & LWORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CHEGV
+
+  SUBROUTINE ZHEGV(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, &
+  & LWORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: W(*), RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZHEGV
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEGVX
+
+  SUBROUTINE CHEGVX(ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, LDB, &
+  & VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, &
+  & LWORK, RWORK, IWORK, IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, IL, IU, LDZ, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: M
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+    INTEGER, INTENT(IN) :: IFAIL(*)
+  END SUBROUTINE CHEGVX
+
+  SUBROUTINE ZHEGVX(ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, LDB, &
+  & VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, &
+  & LWORK, RWORK, IWORK, IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, IL, IU, LDZ, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: M
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+    INTEGER, INTENT(IN) :: IFAIL(*)
+  END SUBROUTINE ZHEGVX
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HEGVD
+
+  SUBROUTINE CHEGVD(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK,&
+  & LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, LDA, LDB, LWORK, LIWORK, LRWORK
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+  END SUBROUTINE CHEGVD
+
+  SUBROUTINE ZHEGVD(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK,&
+  & LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, LDA, LDB, LWORK, LIWORK, LRWORK
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+  END SUBROUTINE ZHEGVD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_HETRD
+
+  SUBROUTINE CHETRD(UPLO, N, A, LDA, D, E, TAU, WORK, LWORK, &
+  & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: D(*), E(*)
+    COMPLEX(WP), INTENT(OUT) :: TAU(*), WORK(LWORK)
+  END SUBROUTINE CHETRD
+
+  SUBROUTINE ZHETRD(UPLO, N, A, LDA, D, E, TAU, WORK, LWORK, &
+  & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: D(*), E(*)
+    COMPLEX(WP), INTENT(OUT) :: TAU(*), WORK(LWORK)
+  END SUBROUTINE ZHETRD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+CONTAINS
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CHESV1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE CHESV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE CHESV
+  END INTERFACE
+  CALL CHESV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK,  &
+  & INFO)
+END SUBROUTINE CHESV1
+
+SUBROUTINE ZHESV1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE ZHESV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE ZHESV
+  END INTERFACE
+  CALL ZHESV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK,  &
+  & INFO)
+END SUBROUTINE ZHESV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CHETRS1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+  COMPLEX(WP), INTENT(INOUT) :: B(*)
+  INTERFACE
+    SUBROUTINE CHETRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, &
+  & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+      COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+    END SUBROUTINE CHETRS
+  END INTERFACE
+  CALL CHETRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+END SUBROUTINE CHETRS1
+
+SUBROUTINE ZHETRS1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+  COMPLEX(WP), INTENT(INOUT) :: B(*)
+  INTERFACE
+    SUBROUTINE ZHETRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, &
+  & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+      COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+    END SUBROUTINE ZHETRS
+  END INTERFACE
+  CALL ZHETRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+END SUBROUTINE ZHETRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CHESVX1(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  & B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  & LWORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR, RWORK(*)
+  COMPLEX(WP), INTENT(OUT) :: X(*), WORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  INTERFACE
+    SUBROUTINE CHESVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+  & IPIV, B, LDB, X, LDX, RCOND, FERR, BERR,  &
+  & WORK, LWORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+    END SUBROUTINE CHESVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL CHESVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+  & LDB, X, LDX, RCOND, LFERR, LBERR, WORK, LWORK, &
+  & RWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE CHESVX1
+
+SUBROUTINE ZHESVX1(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  & B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  & LWORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR, RWORK(*)
+  COMPLEX(WP), INTENT(OUT) :: X(*), WORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  INTERFACE
+    SUBROUTINE ZHESVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+  & IPIV, B, LDB, X, LDX, RCOND, FERR, BERR,  &
+  & WORK, LWORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+    END SUBROUTINE ZHESVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL ZHESVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+  & LDB, X, LDX, RCOND, LFERR, LBERR, WORK, LWORK, &
+  & RWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE ZHESVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CHERFS1(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB,&
+  & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR, RWORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: X(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE CHERFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B,&
+  & LDB, X, LDX, FERR, BERR, WORK, RWORK, &
+  & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), &
+  & B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE CHERFS
+  END INTERFACE
+  REAL(WP) FERR1(1), BERR1(1)
+  CALL CHERFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, &
+  & LDX, FERR1, BERR1, WORK, RWORK, INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE CHERFS1
+
+SUBROUTINE ZHERFS1(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB,&
+  & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR, RWORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: X(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE ZHERFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B,&
+  & LDB, X, LDX, FERR, BERR, WORK, RWORK, &
+  & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), &
+  & B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE ZHERFS
+  END INTERFACE
+  REAL(WP) FERR1(1), BERR1(1)
+  CALL ZHERFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, &
+  & LDX, FERR1, BERR1, WORK, RWORK, INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE ZHERFS1
+
+END MODULE F77_HE_LAPACK
