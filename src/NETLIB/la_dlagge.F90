@@ -1,4 +1,5 @@
-      SUBROUTINE ZLAGGE_F95( A, KL, KU, D, ISEED, INFO )
+#ifdef NO_LAGGE_BUG
+SUBROUTINE DLAGGE_F95( A, KL, KU, D, ISEED, INFO )
 !
 !  -- LAPACK95 interface driver routine (version 3.0) --
 !     UNI-C, Denmark; Univ. of Tennessee, USA; NAG Ltd., UK
@@ -16,7 +17,7 @@
 !     .. "Array Arguments" ..
       INTEGER, INTENT(INOUT), OPTIONAL, TARGET :: ISEED(4)
       REAL(WP), INTENT(IN), OPTIONAL, TARGET :: D(:)
-      COMPLEX(WP), INTENT(OUT) :: A(:,:)
+      REAL(WP), INTENT(OUT) :: A(:,:)
 !-----------------------------------------------------------------
 !
 !  Purpose
@@ -78,7 +79,7 @@
       INTEGER :: LISEED(4)
 !     .. "Local Pointers" ..
       REAL(WP), POINTER :: LD(:)
-      COMPLEX(WP), POINTER :: WORK(:)
+      REAL(WP), POINTER :: WORK(:)
 !     .. "Intrinsic Functions" ..
       INTRINSIC SIZE, PRESENT, MAX, MIN
 !     .. "Executable Statements" ..
@@ -118,4 +119,5 @@
          IF( .NOT. PRESENT(D) )DEALLOCATE( LD, STAT=ISTAT1)
       ENDIF
       CALL ERINFO( LINFO, SRNAME, INFO, ISTAT )
-      END SUBROUTINE ZLAGGE_F95
+      END SUBROUTINE DLAGGE_F95
+#endif

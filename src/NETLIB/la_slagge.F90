@@ -1,11 +1,12 @@
-      SUBROUTINE DLAGGE_F95( A, KL, KU, D, ISEED, INFO )
+#ifdef NO_LAGGE_BUG
+SUBROUTINE SLAGGE_F95( A, KL, KU, D, ISEED, INFO )
 !
 !  -- LAPACK95 interface driver routine (version 3.0) --
 !     UNI-C, Denmark; Univ. of Tennessee, USA; NAG Ltd., UK
 !     September, 2000
 !
 !     .. "Use Statements" ..
-      USE LA_PRECISION, ONLY: WP => DP
+      USE LA_PRECISION, ONLY: WP => SP
       USE LA_AUXMOD, ONLY: ERINFO
       USE F77_LAPACK, ONLY: LAGGE_F77 => LA_LAGGE
 !     .. "Implicit Statement" ..
@@ -118,4 +119,5 @@
          IF( .NOT. PRESENT(D) )DEALLOCATE( LD, STAT=ISTAT1)
       ENDIF
       CALL ERINFO( LINFO, SRNAME, INFO, ISTAT )
-      END SUBROUTINE DLAGGE_F95
+      END SUBROUTINE SLAGGE_F95
+#endif

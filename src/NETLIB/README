@@ -17,28 +17,28 @@ interface block (see below). There are here: 1) LAPACK95 library
 routines (auxiliary and user callable). 2) Fortran95 generic
 interface
 blocks for LAPACK driver and computational routines are:
-f77_lapack_single.f90 -- for single precision library,
-f77_lapack_double.f90 -- for double precision library,
-f77_lapack_single_complex.f90 -- for single precision and complex
-library, f77_lapack_single_double.f90 -- for single and double
-precisions library, f77_lapack_double_dcomplex.f90 -- for double
+f77_lapack_single.F90 -- for single precision library,
+f77_lapack_double.F90 -- for double precision library,
+f77_lapack_single_complex.F90 -- for single precision and complex
+library, f77_lapack_single_double.F90 -- for single and double
+precisions library, f77_lapack_double_dcomplex.F90 -- for double
 precision and double complex library,
-f77_lapack_single_double_complex.f90 -- for single and double
+f77_lapack_single_double_complex.F90 -- for single and double
 precision, and complex library,
-f77_lapack_single_double_complex_dcomplex.f90 -- for single and double
+f77_lapack_single_double_complex_dcomplex.F90 -- for single and double
 precision, complex and double complex library 3) Fortran95 generic
 interface blocks for LAPACK5 auxiliary routines (this module is needed
-for every library version): la_auxmod.f90 -- for LAPACK95 auxiliary
+for every library version): la_auxmod.F90 -- for LAPACK95 auxiliary
 routines. 4) Fortran95 generic interface blocks for LAPACK5 driver
-routines are: f95_lapack_single.f90 -- for single precision library,
-f95_lapack_double.f90 -- for double precision library,
-f95_lapack_single_complex.f90 -- for single precision and complex
-library, f95_lapack_single_double.f90 -- for single and double
-precisions library, f95_lapack_double_dcomplex.f90 -- for double
+routines are: f95_lapack_single.F90 -- for single precision library,
+f95_lapack_double.F90 -- for double precision library,
+f95_lapack_single_complex.F90 -- for single precision and complex
+library, f95_lapack_single_double.F90 -- for single and double
+precisions library, f95_lapack_double_dcomplex.F90 -- for double
 precision and double complex library,
-f95_lapack_single_double_complex.f90 -- for single and double
+f95_lapack_single_double_complex.F90 -- for single and double
 precision, and complex library,
-f95_lapack_single_double_complex_dcomplex.f90 -- for single and double
+f95_lapack_single_double_complex_dcomplex.F90 -- for single and double
 precision, complex and double complex library. 5) The makefile by
 which the LAPACK95 library can be generated. And 6) this README file.
 
