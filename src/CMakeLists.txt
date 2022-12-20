@@ -26,7 +26,7 @@ ${src_path}/la_ssbgvx.F90 ${src_path}/la_sspgvx.F90 ${src_path}/la_sggev.F90 ${s
 ${src_path}/la_sstevr.F90 ${src_path}/la_sgelsd.F90 ${src_path}/la_sgelsd1.F90 ${src_path}/la_ssyevr.F90
 ${src_path}/la_sggevx.F90 ${src_path}/la_ssygvx.F90 ${src_path}/la_sggesx.F90 ${src_path}/la_sgesdd.F90
 ${src_path}/la_ssytrf.F90 ${src_path}/la_slacpy.F90 ${src_path}/la_slapmr.F90 ${src_path}/la_slapmt.F90
-${src_path}/la_ssyswapr.F90
+${src_path}/la_ssyswapr.F90 ${src_path}/la_ssytrs.F90 ${src_path}/la_ssytrs1.F90
 )
 
 LIST(APPEND l95_src
@@ -56,7 +56,7 @@ ${src_path}/la_dsbgvx.F90 ${src_path}/la_dspgvx.F90 ${src_path}/la_dggev.F90 ${s
 ${src_path}/la_dstevr.F90 ${src_path}/la_dgelsd.F90 ${src_path}/la_dgelsd1.F90 ${src_path}/la_dsyevr.F90
 ${src_path}/la_dggevx.F90 ${src_path}/la_dsygvx.F90 ${src_path}/la_dggesx.F90 ${src_path}/la_dgesdd.F90
 ${src_path}/la_dsytrf.F90 ${src_path}/la_dlacpy.F90 ${src_path}/la_dlapmr.F90 ${src_path}/la_dlapmt.F90
-${src_path}/la_dsyswapr.F90
+${src_path}/la_dsyswapr.F90 ${src_path}/la_dsytrs.F90 ${src_path}/la_dsytrs1.F90
 )
 
 LIST(APPEND l95_src
@@ -87,6 +87,7 @@ ${src_path}/la_chbgvd.F90 ${src_path}/la_chegvd.F90 ${src_path}/la_cggev.F90 ${s
 ${src_path}/la_cgelsd.F90 ${src_path}/la_cgelsd1.F90 ${src_path}/la_cheevr.F90 ${src_path}/la_cggevx.F90
 ${src_path}/la_chegvx.F90 ${src_path}/la_cggesx.F90 ${src_path}/la_cgesdd.F90 ${src_path}/la_csytrf.F90
 ${src_path}/la_clacpy.F90 ${src_path}/la_clapmr.F90 ${src_path}/la_clapmt.F90 ${src_path}/la_csyswapr.F90
+${src_path}/la_csytrs.F90 ${src_path}/la_csytrs1.F90
 )
 
 LIST(APPEND l95_src
@@ -117,6 +118,7 @@ ${src_path}/la_zhbgvd.F90 ${src_path}/la_zhegvd.F90 ${src_path}/la_zggev.F90 ${s
 ${src_path}/la_zgelsd.F90 ${src_path}/la_zgelsd1.F90 ${src_path}/la_zheevr.F90 ${src_path}/la_zggevx.F90
 ${src_path}/la_zhegvx.F90 ${src_path}/la_zggesx.F90 ${src_path}/la_zgesdd.F90 ${src_path}/la_zsytrf.F90
 ${src_path}/la_zlacpy.F90 ${src_path}/la_zlapmr.F90 ${src_path}/la_zlapmt.F90 ${src_path}/la_zsyswapr.F90
+${src_path}/la_zsytrs.F90 ${src_path}/la_zsytrs1.F90
 )
 
 TARGET_SOURCES(
