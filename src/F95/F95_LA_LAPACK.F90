@@ -17,6 +17,44 @@
 
 MODULE F95_LA_LAPACK
 
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LAPMR
+  SUBROUTINE SLAPMR_F95(X, K, FORWRD)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(INOUT) :: K(:)
+    REAL(WP), INTENT(INOUT) :: X(:, :)
+    LOGICAL, OPTIONAL, INTENT(IN) :: FORWRD
+  END SUBROUTINE SLAPMR_F95
+
+  SUBROUTINE DLAPMR_F95(X, K, FORWRD)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(INOUT) :: K(:)
+    REAL(WP), INTENT(INOUT) :: X(:, :)
+    LOGICAL, OPTIONAL, INTENT(IN) :: FORWRD
+  END SUBROUTINE DLAPMR_F95
+
+  SUBROUTINE CLAPMR_F95(X, K, FORWRD)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(INOUT) :: K(:)
+    COMPLEX(WP), INTENT(INOUT) :: X(:, :)
+    LOGICAL, OPTIONAL, INTENT(IN) :: FORWRD
+  END SUBROUTINE CLAPMR_F95
+
+  SUBROUTINE ZLAPMR_F95(X, K, FORWRD)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(INOUT) :: K(:)
+    COMPLEX(WP), INTENT(INOUT) :: X(:, :)
+    LOGICAL, OPTIONAL, INTENT(IN) :: FORWRD
+  END SUBROUTINE ZLAPMR_F95
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
 INTERFACE LACPY
 
   SUBROUTINE SLACPY_F95(A, B, UPLO)
