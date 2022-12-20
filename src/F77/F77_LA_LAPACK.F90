@@ -21,6 +21,44 @@ MODULE F77_LA_LAPACK
 !
 !----------------------------------------------------------------------------
 
+INTERFACE LA_LAPMR
+  SUBROUTINE SLAPMR(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => SP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE
+
+  SUBROUTINE DLAPMR(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => DP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE DLAPMR
+
+  SUBROUTINE CLAPMR(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => SP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE CLAPMR
+
+  SUBROUTINE ZLAPMR(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => DP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE ZLAPMR
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
 INTERFACE LA_LAPMT
   SUBROUTINE SLAPMT(FORWRD, M, N, X, LDX, K)
     USE LA_PRECISION, ONLY: WP => SP
