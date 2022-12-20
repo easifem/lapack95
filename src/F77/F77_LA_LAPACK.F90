@@ -21,6 +21,44 @@ MODULE F77_LA_LAPACK
 !
 !----------------------------------------------------------------------------
 
+INTERFACE LA_LAPMT
+  SUBROUTINE SLAPMT(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => SP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE SLAPMT
+
+  SUBROUTINE DLAPMT(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => DP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE DLAPMT
+
+  SUBROUTINE CLAPMT(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => SP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE CLAPMT
+
+  SUBROUTINE ZLAPMT(FORWRD, M, N, X, LDX, K)
+    USE LA_PRECISION, ONLY: WP => DP
+    LOGICAL, INTENT(IN) :: FORWRD
+    INTEGER, INTENT(IN) :: M, N, LDX
+    INTEGER, INTENT(INOUT) :: K(*)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+  END SUBROUTINE ZLAPMT
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
 ! subroutine dlacpy        (        character         UPLO,
 ! integer         M,
 ! integer         N,
