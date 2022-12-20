@@ -95,6 +95,8 @@ else:
 
     print("CMAKE DEF : ", cmake_def)
 
-    os.system(f"cmake -S ./ -B ~/temp/easifem-extpkgs/build {cmake_def}")
-    os.system(f"cmake --build ~/temp/easifem-extpkgs/build --target install")
+    build_dir = "~/temp/easifem-extpkgs/lapack95/build"
+    os.makedirs(build_dir, exist_ok=True)
+    os.system(f"cmake -S ./ -B {build_dir} {cmake_def}")
+    os.system(f"cmake --build {build_dir} --target install")
     print("Installation DONE!!")
