@@ -1,0 +1,664 @@
+! This program is a part of EASIFEM library
+! Copyright (C) 2020-2021  Vikas Sharma, Ph.D
+!
+! This program is free software: you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation, either version 3 of the License, or
+! (at your option) any later version.
+!
+! This program is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! You should have received a copy of the GNU General Public License
+! along with this program.  If not, see <https: //www.gnu.org/licenses/>
+!
+
+MODULE F77_GG_LAPACK
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGRQF
+
+  SUBROUTINE SGGRQF(M, P, N, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE SGGRQF
+
+  SUBROUTINE DGGRQF(M, P, N, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE DGGRQF
+
+  SUBROUTINE CGGRQF(M, P, N, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE CGGRQF
+
+  SUBROUTINE ZGGRQF(M, P, N, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE ZGGRQF
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGQRF
+
+  SUBROUTINE SGGQRF(N, M, P, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE SGGQRF
+
+  SUBROUTINE DGGQRF(N, M, P, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE DGGQRF
+
+  SUBROUTINE CGGQRF(N, M, P, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE CGGQRF
+
+  SUBROUTINE ZGGQRF(N, M, P, A, LDA, TAUA, B, LDB, TAUB, WORK, &
+      &  LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: LDA, LDB, LWORK, M, N, P
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: TAUA(*), TAUB(*), WORK(*)
+  END SUBROUTINE ZGGQRF
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGSVP
+
+  SUBROUTINE SGGSVP(JOBU, JOBV, JOBQ, M, P, N, A, LDA, B, LDB, &
+      &  TOLA, TOLB, K, L, U, LDU, V, LDV, Q, LDQ, &
+      &  IWORK, TAU, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBQ, JOBU, JOBV
+    INTEGER, INTENT(IN) :: LDA, LDB, LDQ, LDU, LDV, M, N, P
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(IN) :: TOLA, TOLB
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: Q(LDQ, *), TAU(*), U(LDU, *), V(LDV, *), &
+    &         WORK(*)
+  END SUBROUTINE SGGSVP
+
+  SUBROUTINE DGGSVP(JOBU, JOBV, JOBQ, M, P, N, A, LDA, B, LDB, &
+      &  TOLA, TOLB, K, L, U, LDU, V, LDV, Q, LDQ, &
+      &  IWORK, TAU, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBQ, JOBU, JOBV
+    INTEGER, INTENT(IN) :: LDA, LDB, LDQ, LDU, LDV, M, N, P
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(IN) :: TOLA, TOLB
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: Q(LDQ, *), TAU(*), U(LDU, *), V(LDV, *), &
+    &         WORK(*)
+  END SUBROUTINE DGGSVP
+
+  SUBROUTINE CGGSVP(JOBU, JOBV, JOBQ, M, P, N, A, LDA, B, LDB, &
+      &  TOLA, TOLB, K, L, U, LDU, V, LDV, Q, LDQ, &
+      &  IWORK, RWORK, TAU, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBQ, JOBU, JOBV
+    INTEGER, INTENT(IN) :: LDA, LDB, LDQ, LDU, LDV, M, N, P
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(IN) :: TOLA, TOLB
+    REAL(WP), INTENT(IN) :: RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: Q(LDQ, *), TAU(*), U(LDU, *), &
+      &  V(LDV, *), WORK(*)
+  END SUBROUTINE CGGSVP
+
+  SUBROUTINE ZGGSVP(JOBU, JOBV, JOBQ, M, P, N, A, LDA, B, LDB, &
+      &  TOLA, TOLB, K, L, U, LDU, V, LDV, Q, LDQ, &
+      &  IWORK, RWORK, TAU, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBQ, JOBU, JOBV
+    INTEGER, INTENT(IN) :: LDA, LDB, LDQ, LDU, LDV, M, N, P
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(IN) :: TOLA, TOLB
+    REAL(WP), INTENT(IN) :: RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: Q(LDQ, *), TAU(*), U(LDU, *), &
+      &  V(LDV, *), WORK(*)
+  END SUBROUTINE ZGGSVP
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGBAK
+
+  SUBROUTINE SGGBAK(JOB, SIDE, N, ILO, IHI, LSCALE, RSCALE, M, V, &
+      &  LDV, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB, SIDE
+    INTEGER, INTENT(IN) :: IHI, ILO, LDV, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: LSCALE(*), RSCALE(*)
+    REAL(WP), INTENT(INOUT) :: V(LDV, *)
+  END SUBROUTINE SGGBAK
+
+  SUBROUTINE DGGBAK(JOB, SIDE, N, ILO, IHI, LSCALE, RSCALE, M, V, &
+      &  LDV, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB, SIDE
+    INTEGER, INTENT(IN) :: IHI, ILO, LDV, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: LSCALE(*), RSCALE(*)
+    REAL(WP), INTENT(INOUT) :: V(LDV, *)
+  END SUBROUTINE DGGBAK
+
+  SUBROUTINE CGGBAK(JOB, SIDE, N, ILO, IHI, LSCALE, RSCALE, M, V, &
+      &  LDV, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB, SIDE
+    INTEGER, INTENT(IN) :: IHI, ILO, LDV, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: LSCALE(*), RSCALE(*)
+    COMPLEX(WP), INTENT(INOUT) :: V(LDV, *)
+  END SUBROUTINE CGGBAK
+
+  SUBROUTINE ZGGBAK(JOB, SIDE, N, ILO, IHI, LSCALE, RSCALE, M, V, &
+      &  LDV, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB, SIDE
+    INTEGER, INTENT(IN) :: IHI, ILO, LDV, M, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: LSCALE(*), RSCALE(*)
+    COMPLEX(WP), INTENT(INOUT) :: V(LDV, *)
+  END SUBROUTINE ZGGBAK
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGBAL
+
+  SUBROUTINE SGGBAL(JOB, N, A, LDA, B, LDB, ILO, IHI, LSCALE, &
+      &  RSCALE, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB
+    INTEGER, INTENT(IN) :: LDA, LDB, N
+    INTEGER, INTENT(OUT) :: IHI, ILO, INFO
+    REAL(WP), INTENT(OUT) :: LSCALE(*), RSCALE(*), WORK(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+  END SUBROUTINE SGGBAL
+
+  SUBROUTINE DGGBAL(JOB, N, A, LDA, B, LDB, ILO, IHI, LSCALE, &
+      &  RSCALE, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB
+    INTEGER, INTENT(IN) :: LDA, LDB, N
+    INTEGER, INTENT(OUT) :: IHI, ILO, INFO
+    REAL(WP), INTENT(OUT) :: LSCALE(*), RSCALE(*), WORK(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+  END SUBROUTINE DGGBAL
+
+  SUBROUTINE CGGBAL(JOB, N, A, LDA, B, LDB, ILO, IHI, LSCALE, &
+      &  RSCALE, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB
+    INTEGER, INTENT(IN) :: LDA, LDB, N
+    INTEGER, INTENT(OUT) :: IHI, ILO, INFO
+    REAL(WP), INTENT(OUT) :: LSCALE(*), RSCALE(*), WORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+  END SUBROUTINE CGGBAL
+
+  SUBROUTINE ZGGBAL(JOB, N, A, LDA, B, LDB, ILO, IHI, LSCALE, &
+      &  RSCALE, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOB
+    INTEGER, INTENT(IN) :: LDA, LDB, N
+    INTEGER, INTENT(OUT) :: IHI, ILO, INFO
+    REAL(WP), INTENT(OUT) :: LSCALE(*), RSCALE(*), WORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+  END SUBROUTINE ZGGBAL
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGHRD
+
+  SUBROUTINE SGGHRD(COMPQ, COMPZ, N, ILO, IHI, A, LDA, B, LDB, Q, &
+      &  LDQ, Z, LDZ, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: COMPQ, COMPZ
+    INTEGER, INTENT(IN) :: IHI, ILO, LDA, LDB, LDQ, LDZ, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), Q(LDQ, *), &
+      & Z(LDZ, *)
+  END SUBROUTINE SGGHRD
+
+  SUBROUTINE DGGHRD(COMPQ, COMPZ, N, ILO, IHI, A, LDA, B, LDB, Q, &
+      &  LDQ, Z, LDZ, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: COMPQ, COMPZ
+    INTEGER, INTENT(IN) :: IHI, ILO, LDA, LDB, LDQ, LDZ, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), Q(LDQ, *), &
+      & Z(LDZ, *)
+  END SUBROUTINE DGGHRD
+
+  SUBROUTINE CGGHRD(COMPQ, COMPZ, N, ILO, IHI, A, LDA, B, LDB, Q, &
+      &  LDQ, Z, LDZ, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: COMPQ, COMPZ
+    INTEGER, INTENT(IN) :: IHI, ILO, LDA, LDB, LDQ, LDZ, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), Q(LDQ, *), &
+      &    Z(LDZ, *)
+  END SUBROUTINE CGGHRD
+
+  SUBROUTINE ZGGHRD(COMPQ, COMPZ, N, ILO, IHI, A, LDA, B, LDB, Q, &
+      &  LDQ, Z, LDZ, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: COMPQ, COMPZ
+    INTEGER, INTENT(IN) :: IHI, ILO, LDA, LDB, LDQ, LDZ, N
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), Q(LDQ, *), &
+      &    Z(LDZ, *)
+  END SUBROUTINE ZGGHRD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGSVD
+
+  SUBROUTINE SGGSVD(JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, &
+    & LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, &
+    & WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBU, JOBV, JOBQ
+    INTEGER, INTENT(IN) :: M, N, P, LDA, LDB, LDU, LDV, LDQ
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(OUT) :: ALPHA(*), BETA(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: U(LDU, *), V(LDV, *), Q(LDQ, *), WORK(*)
+  END SUBROUTINE SGGSVD
+
+  SUBROUTINE DGGSVD(JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, &
+    & LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, &
+    & WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBU, JOBV, JOBQ
+    INTEGER, INTENT(IN) :: M, N, P, LDA, LDB, LDU, LDV, LDQ
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(OUT) :: ALPHA(*), BETA(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: U(LDU, *), V(LDV, *), Q(LDQ, *), WORK(*)
+  END SUBROUTINE DGGSVD
+
+  SUBROUTINE CGGSVD(JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, &
+    & LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, &
+    & WORK, RWORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBU, JOBV, JOBQ
+    INTEGER, INTENT(IN) :: M, N, P, LDA, LDB, LDU, LDV, LDQ
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(OUT) :: ALPHA(*), BETA(*), RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: U(LDU, *), V(LDV, *), Q(LDQ, *), &
+      &  WORK(*)
+  END SUBROUTINE CGGSVD
+
+  SUBROUTINE ZGGSVD(JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, &
+    & LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, &
+    & WORK, RWORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBU, JOBV, JOBQ
+    INTEGER, INTENT(IN) :: M, N, P, LDA, LDB, LDU, LDV, LDQ
+    INTEGER, INTENT(OUT) :: INFO, K, L, IWORK(*)
+    REAL(WP), INTENT(OUT) :: ALPHA(*), BETA(*), RWORK(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: U(LDU, *), V(LDV, *), Q(LDQ, *), &
+      &  WORK(*)
+  END SUBROUTINE ZGGSVD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGESX
+
+  SUBROUTINE SGGESX(JOBVSL, JOBVSR, SORT, SELCTG, SENSE, N, A, &
+    & LDA, B, LDB, SDIM, ALPHAR, ALPHAI, BETA, VSL, &
+    & LDVSL, VSR, LDVSR, RCONDE, RCONDV, WORK, &
+    & LWORK, IWORK, LIWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT, SENSE
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK, LIWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: ALPHAR(*), ALPHAI(*), BETA(*), &
+    &         VSL(LDVSL, *), VSR(LDVSR, *), WORK(*)
+    REAL(WP), INTENT(OUT) :: RCONDE(2), RCONDV(2)
+    LOGICAL :: BWORK(*)
+    INTEGER :: IWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION SELCTG(ALPHAR, ALPHAI, BETA)
+        USE LA_PRECISION, ONLY: WP => SP
+        REAL(WP), INTENT(IN) :: ALPHAR, ALPHAI, BETA
+      END FUNCTION SELCTG
+    END INTERFACE
+    OPTIONAL :: SELCTG
+  END SUBROUTINE SGGESX
+
+  SUBROUTINE DGGESX(JOBVSL, JOBVSR, SORT, DELCTG, SENSE, N, A, &
+    & LDA, B, LDB, SDIM, ALPHAR, ALPHAI, BETA, VSL, &
+    & LDVSL, VSR, LDVSR, RCONDE, RCONDV, WORK, &
+    & LWORK, IWORK, LIWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT, SENSE
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK, LIWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: ALPHAR(*), ALPHAI(*), BETA(*), &
+    &         VSL(LDVSL, *), VSR(LDVSR, *), WORK(*)
+    REAL(WP), INTENT(OUT) :: RCONDE(2), RCONDV(2)
+    LOGICAL :: BWORK(*)
+    INTEGER :: IWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION DELCTG(ALPHAR, ALPHAI, BETA)
+        USE LA_PRECISION, ONLY: WP => DP
+        REAL(WP), INTENT(IN) :: ALPHAR, ALPHAI, BETA
+      END FUNCTION DELCTG
+    END INTERFACE
+    OPTIONAL :: DELCTG
+  END SUBROUTINE DGGESX
+
+  SUBROUTINE CGGESX(JOBVSL, JOBVSR, SORT, SELCTG, SENSE, N, A, &
+    & LDA, B, LDB, SDIM, ALPHA, BETA, VSL, LDVSL, &
+    & VSR, LDVSR, RCONDE, RCONDV, WORK, LWORK, &
+    & RWORK, IWORK, LIWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT, SENSE
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK, LIWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: ALPHA(*), BETA(*), VSL(LDVSL, *), &
+      &  VSR(LDVSR, *), WORK(*)
+    REAL(WP), INTENT(OUT) :: RCONDE(2), RCONDV(2)
+    LOGICAL :: BWORK(*)
+    INTEGER :: IWORK(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION SELCTG(ALPHA, BETA)
+        USE LA_PRECISION, ONLY: WP => SP
+        COMPLEX(WP), INTENT(IN) :: ALPHA, BETA
+      END FUNCTION SELCTG
+    END INTERFACE
+    OPTIONAL :: SELCTG
+  END SUBROUTINE CGGESX
+
+  SUBROUTINE ZGGESX(JOBVSL, JOBVSR, SORT, DELCTG, SENSE, N, A, &
+    & LDA, B, LDB, SDIM, ALPHA, BETA, VSL, LDVSL, &
+    & VSR, LDVSR, RCONDE, RCONDV, WORK, LWORK, &
+    & RWORK, IWORK, LIWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT, SENSE
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK, LIWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: ALPHA(*), BETA(*), VSL(LDVSL, *), &
+      &  VSR(LDVSR, *), WORK(*)
+    REAL(WP), INTENT(OUT) :: RCONDE(2), RCONDV(2)
+    LOGICAL :: BWORK(*)
+    INTEGER :: IWORK(*)
+    REAL(WP), INTENT(OUT) :: RWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION DELCTG(ALPHA, BETA)
+        USE LA_PRECISION, ONLY: WP => DP
+        COMPLEX(WP), INTENT(IN) :: ALPHA, BETA
+      END FUNCTION DELCTG
+    END INTERFACE
+    OPTIONAL :: DELCTG
+  END SUBROUTINE ZGGESX
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGES
+
+  SUBROUTINE SGGES(JOBVSL, JOBVSR, SORT, SELCTG, N, A, LDA, B, &
+    &  LDB, SDIM, ALPHAR, ALPHAI, BETA, VSL, LDVSL, &
+    &  VSR, LDVSR, WORK, LWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: ALPHAR(*), ALPHAI(*), BETA(*), &
+    &         VSL(LDVSL, *), VSR(LDVSR, *), WORK(*)
+    LOGICAL :: BWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION SELCTG(ALPHAR, ALPHAI, BETA)
+        USE LA_PRECISION, ONLY: WP => SP
+        REAL(WP), INTENT(IN) :: ALPHAR, ALPHAI, BETA
+      END FUNCTION SELCTG
+    END INTERFACE
+    OPTIONAL :: SELCTG
+  END SUBROUTINE SGGES
+
+  SUBROUTINE DGGES(JOBVSL, JOBVSR, SORT, DELCTG, N, A, LDA, B, &
+    &  LDB, SDIM, ALPHAR, ALPHAI, BETA, VSL, LDVSL, &
+    &  VSR, LDVSR, WORK, LWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: ALPHAR(*), ALPHAI(*), BETA(*), &
+    &         VSL(LDVSL, *), VSR(LDVSR, *), WORK(*)
+    LOGICAL :: BWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION DELCTG(ALPHAR, ALPHAI, BETA)
+        USE LA_PRECISION, ONLY: WP => DP
+        REAL(WP), INTENT(IN) :: ALPHAR, ALPHAI, BETA
+      END FUNCTION DELCTG
+    END INTERFACE
+    OPTIONAL :: DELCTG
+  END SUBROUTINE DGGES
+
+  SUBROUTINE CGGES(JOBVSL, JOBVSR, SORT, SELCTG, N, A, LDA, B, &
+    &  LDB, SDIM, ALPHA, BETA, VSL, LDVSL, VSR, LDVSR,&
+    &  WORK, LWORK, RWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: ALPHA(*), BETA(*), VSL(LDVSL, *), &
+      &  VSR(LDVSR, *), WORK(*)
+    LOGICAL :: BWORK(*)
+    REAL(WP) :: RWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION SELCTG(ALPHA, BETA)
+        USE LA_PRECISION, ONLY: WP => SP
+        COMPLEX(WP), INTENT(IN) :: ALPHA, BETA
+      END FUNCTION SELCTG
+    END INTERFACE
+    OPTIONAL :: SELCTG
+  END SUBROUTINE CGGES
+
+  SUBROUTINE ZGGES(JOBVSL, JOBVSR, SORT, DELCTG, N, A, LDA, B, &
+    &  LDB, SDIM, ALPHA, BETA, VSL, LDVSL, VSR, LDVSR,&
+    &  WORK, LWORK, RWORK, BWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBVSL, JOBVSR, SORT
+    INTEGER, INTENT(IN) :: LDA, LDB, N, LDVSL, LDVSR, LWORK
+    INTEGER, INTENT(INOUT) :: INFO
+    INTEGER, INTENT(OUT) :: SDIM
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: ALPHA(*), BETA(*), VSL(LDVSL, *), &
+      &  VSR(LDVSR, *), WORK(*)
+    LOGICAL :: BWORK(*)
+    REAL(WP) :: RWORK(*)
+    INTERFACE
+      LOGICAL FUNCTION DELCTG(ALPHA, BETA)
+        USE LA_PRECISION, ONLY: WP => DP
+        COMPLEX(WP), INTENT(IN) :: ALPHA, BETA
+      END FUNCTION DELCTG
+    END INTERFACE
+    OPTIONAL :: DELCTG
+  END SUBROUTINE ZGGES
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGGLM
+
+  SUBROUTINE SGGGLM(N, M, P, A, LDA, B, LDB, D, X, Y, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), D(*)
+    REAL(WP), INTENT(OUT) :: WORK(*), X(*), Y(*)
+  END SUBROUTINE SGGGLM
+
+  SUBROUTINE DGGGLM(N, M, P, A, LDA, B, LDB, D, X, Y, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), D(*)
+    REAL(WP), INTENT(OUT) :: WORK(*), X(*), Y(*)
+  END SUBROUTINE DGGGLM
+
+  SUBROUTINE CGGGLM(N, M, P, A, LDA, B, LDB, D, X, Y, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), D(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), X(*), Y(*)
+  END SUBROUTINE CGGGLM
+
+  SUBROUTINE ZGGGLM(N, M, P, A, LDA, B, LDB, D, X, Y, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), D(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), X(*), Y(*)
+  END SUBROUTINE ZGGGLM
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_GGLSE
+
+  SUBROUTINE SGGLSE(M, N, P, A, LDA, B, LDB, C, D, X, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), C(*), D(*)
+    REAL(WP), INTENT(OUT) :: WORK(*), X(*)
+  END SUBROUTINE SGGLSE
+
+  SUBROUTINE DGGLSE(M, N, P, A, LDA, B, LDB, C, D, X, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), C(*), D(*)
+    REAL(WP), INTENT(OUT) :: WORK(*), X(*)
+  END SUBROUTINE DGGLSE
+
+  SUBROUTINE CGGLSE(M, N, P, A, LDA, B, LDB, C, D, X, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), C(*), D(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), X(*)
+  END SUBROUTINE CGGLSE
+
+  SUBROUTINE ZGGLSE(M, N, P, A, LDA, B, LDB, C, D, X, WORK, LWORK,&
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    INTEGER, INTENT(IN) :: P, M, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *), C(*), D(*)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*), X(*)
+  END SUBROUTINE ZGGLSE
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+END MODULE F77_GG_LAPACK

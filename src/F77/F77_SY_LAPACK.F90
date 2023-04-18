@@ -1,0 +1,1338 @@
+! This program is a part of EASIFEM library
+! Copyright (C) 2020-2021  Vikas Sharma, Ph.D
+!
+! This program is free software: you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation, either version 3 of the License, or
+! (at your option) any later version.
+!
+! This program is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! You should have received a copy of the GNU General Public License
+! along with this program.  If not, see <https: //www.gnu.org/licenses/>
+!
+
+MODULE F77_SY_LAPACK
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYSWAPR
+  SUBROUTINE SSYSWAPR(UPLO, N, A, LDA, I1, I2)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: N, LDA, I1, I2
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE SSYSWAPR
+
+  SUBROUTINE DSYSWAPR(UPLO, N, A, LDA, I1, I2)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: N, LDA, I1, I2
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE DSYSWAPR
+
+  SUBROUTINE CSYSWAPR(UPLO, N, A, LDA, I1, I2)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: N, LDA, I1, I2
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE CSYSWAPR
+
+  SUBROUTINE ZSYSWAPR(UPLO, N, A, LDA, I1, I2)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: N, LDA, I1, I2
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE ZSYSWAPR
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYCONV
+
+  SUBROUTINE SSYCONV(UPLO, WAY, N, A, LDA, IPIV, E, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    CHARACTER(LEN=1), INTENT(IN) :: WAY
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: E(*)
+  END SUBROUTINE SSYCONV
+
+  SUBROUTINE DSYCONV(UPLO, WAY, N, A, LDA, IPIV, E, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    CHARACTER(LEN=1), INTENT(IN) :: WAY
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: E(*)
+  END SUBROUTINE DSYCONV
+
+  SUBROUTINE CSYCONV(UPLO, WAY, N, A, LDA, IPIV, E, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    CHARACTER(LEN=1), INTENT(IN) :: WAY
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: E(*)
+  END SUBROUTINE CSYCONV
+
+  SUBROUTINE ZSYCONV(UPLO, WAY, N, A, LDA, IPIV, E, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    CHARACTER(LEN=1), INTENT(IN) :: WAY
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: E(*)
+  END SUBROUTINE ZSYCONV
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYTRI
+
+  SUBROUTINE SSYTRI(UPLO, N, A, LDA, IPIV, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYTRI
+
+  SUBROUTINE DSYTRI(UPLO, N, A, LDA, IPIV, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYTRI
+
+  SUBROUTINE CSYTRI(UPLO, N, A, LDA, IPIV, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CSYTRI
+
+  SUBROUTINE ZSYTRI(UPLO, N, A, LDA, IPIV, WORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZSYTRI
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYRFS
+
+  SUBROUTINE SSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, &
+    & X, LDX, FERR, BERR, WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYRFS
+
+  SUBROUTINE DSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, &
+    & X, LDX, FERR, BERR, WORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    REAL(WP), INTENT(INOUT) :: X(LDX, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYRFS
+
+  SUBROUTINE CSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, &
+    & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CSYRFS
+
+  SUBROUTINE ZSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, &
+    & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZSYRFS
+
+  MODULE PROCEDURE SSYRFS1
+  MODULE PROCEDURE DSYRFS1
+  MODULE PROCEDURE CSYRFS1
+  MODULE PROCEDURE ZSYRFS1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYCON
+
+  SUBROUTINE SSYCON(UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, &
+    & IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYCON
+
+  SUBROUTINE DSYCON(UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, &
+    & IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYCON
+
+  SUBROUTINE CSYCON(UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CSYCON
+
+  SUBROUTINE ZSYCON(UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: ANORM
+    REAL(WP), INTENT(OUT) :: RCOND
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZSYCON
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYTRS
+
+  SUBROUTINE SSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *)
+    REAL(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE SSYTRS
+
+  SUBROUTINE DSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *)
+    REAL(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE DSYTRS
+
+  SUBROUTINE CSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE CSYTRS
+
+  SUBROUTINE ZSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+    COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+  END SUBROUTINE ZSYTRS
+
+  MODULE PROCEDURE SSYTRS1
+  MODULE PROCEDURE DSYTRS1
+  MODULE PROCEDURE CSYTRS1
+  MODULE PROCEDURE ZSYTRS1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYTRF
+
+  SUBROUTINE SSYTRF(UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(LWORK)
+  END SUBROUTINE SSYTRF
+
+  SUBROUTINE DSYTRF(UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(LWORK)
+  END SUBROUTINE DSYTRF
+
+  SUBROUTINE CSYTRF(UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(LWORK)
+  END SUBROUTINE CSYTRF
+
+  SUBROUTINE ZSYTRF(UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(LWORK)
+  END SUBROUTINE ZSYTRF
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYSV
+
+  SUBROUTINE SSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+    & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYSV
+
+  SUBROUTINE DSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+    & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYSV
+
+  SUBROUTINE CSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+    & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE CSYSV
+
+  SUBROUTINE ZSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+    & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(IN) :: IPIV(*)
+    COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE ZSYSV
+
+  MODULE PROCEDURE SSYSV1
+  MODULE PROCEDURE DSYSV1
+  MODULE PROCEDURE CSYSV1
+  MODULE PROCEDURE ZSYSV1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYSVX
+
+  SUBROUTINE SSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+    & B, LDB, X, LDX, RCOND, FERR, BERR, WORK,      &
+    & LWORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+    REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(INOUT) :: AF(LDAF, *)
+  END SUBROUTINE SSYSVX
+
+  SUBROUTINE DSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+    & B, LDB, X, LDX, RCOND, FERR, BERR, WORK,      &
+    & LWORK, IWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+    REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    REAL(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(INOUT) :: AF(LDAF, *)
+  END SUBROUTINE DSYSVX
+
+  SUBROUTINE CSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+    & B, LDB, X, LDX, RCOND, FERR, BERR, WORK,      &
+    & LWORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  END SUBROUTINE CSYSVX
+
+  SUBROUTINE ZSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+    & B, LDB, X, LDX, RCOND, FERR, BERR, WORK,      &
+    & LWORK, RWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+    INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(INOUT) :: IPIV(*)
+    REAL(WP), INTENT(OUT) :: RCOND
+    REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+    COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+    COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+    COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  END SUBROUTINE ZSYSVX
+
+  MODULE PROCEDURE SSYSVX1
+  MODULE PROCEDURE DSYSVX1
+  MODULE PROCEDURE CSYSVX1
+  MODULE PROCEDURE ZSYSVX1
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYEV
+
+  SUBROUTINE SSYEV(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYEV
+
+  SUBROUTINE DSYEV(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYEV
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYEVD
+
+  SUBROUTINE SSYEVD(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, IWORK, &
+    & LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LIWORK, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYEVD
+
+  SUBROUTINE DSYEVD(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, IWORK, &
+    & LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: LDA, LIWORK, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYEVD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYEVR
+
+  SUBROUTINE SSYEVR(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+    & ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, &
+    & IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: N, IL, IU, LDZ, LDA, LWORK, LIWORK
+    INTEGER, INTENT(OUT) :: M
+    INTEGER, INTENT(OUT) :: ISUPPZ(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+  END SUBROUTINE SSYEVR
+
+  SUBROUTINE DSYEVR(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+    & ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, &
+    & IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: N, IL, IU, LDZ, LDA, LWORK, LIWORK
+    INTEGER, INTENT(OUT) :: M
+    INTEGER, INTENT(OUT) :: ISUPPZ(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+  END SUBROUTINE DSYEVR
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYEVX
+
+  SUBROUTINE SSYEVX(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+    & ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, &
+    & IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: IL, IU, LDA, LDZ, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, M
+    INTEGER, INTENT(OUT) :: IFAIL(*), IWORK(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+  END SUBROUTINE SSYEVX
+
+  SUBROUTINE DSYEVX(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, &
+    & ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, &
+    & IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: IL, IU, LDA, LDZ, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO, M
+    INTEGER, INTENT(OUT) :: IFAIL(*), IWORK(*)
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+  END SUBROUTINE DSYEVX
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYGST
+
+  SUBROUTINE SSYGST(ITYPE, UPLO, N, A, LDA, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: B(LDB, *)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE SSYGST
+
+  SUBROUTINE DSYGST(ITYPE, UPLO, N, A, LDA, B, LDB, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(IN) :: B(LDB, *)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+  END SUBROUTINE DSYGST
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYGV
+
+  SUBROUTINE SSYGV(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, &
+    & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYGV
+
+  SUBROUTINE DSYGV(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, &
+    & LWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, LDA, LDB, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYGV
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYGVX
+
+  SUBROUTINE SSYGVX(ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, LDB, &
+    & VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, &
+    & LWORK, IWORK, IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, IL, IU, LDZ, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: M
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    INTEGER, INTENT(IN) :: IFAIL(*)
+  END SUBROUTINE SSYGVX
+
+  SUBROUTINE DSYGVX(ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, LDB, &
+    & VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, &
+    & LWORK, IWORK, IFAIL, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, RANGE, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, IL, IU, LDZ, LDA, LDB, LWORK
+    INTEGER, INTENT(OUT) :: M
+    REAL(WP), INTENT(IN) :: ABSTOL, VL, VU
+    INTEGER, INTENT(OUT) :: IWORK(*)
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: WORK(*), Z(LDZ, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    INTEGER, INTENT(IN) :: IFAIL(*)
+  END SUBROUTINE DSYGVX
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYGVD
+
+  SUBROUTINE SSYGVD(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK,&
+    & LWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, LDA, LDB, LWORK, LIWORK
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE SSYGVD
+
+  SUBROUTINE DSYGVD(ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK,&
+    & LWORK, IWORK, LIWORK, INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: JOBZ, UPLO
+    INTEGER, INTENT(IN) :: ITYPE, N, LDA, LDB, LWORK, LIWORK
+    INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+    REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+    REAL(WP), INTENT(OUT) :: W(*)
+    REAL(WP), INTENT(OUT) :: WORK(*)
+  END SUBROUTINE DSYGVD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+INTERFACE LA_SYTRD
+
+  SUBROUTINE SSYTRD(UPLO, N, A, LDA, D, E, TAU, WORK, LWORK,      &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => SP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: D(*), E(*)
+    REAL(WP), INTENT(OUT) :: TAU(*), WORK(LWORK)
+  END SUBROUTINE SSYTRD
+
+  SUBROUTINE DSYTRD(UPLO, N, A, LDA, D, E, TAU, WORK, LWORK,      &
+    & INFO)
+    USE LA_PRECISION, ONLY: WP => DP
+    CHARACTER(LEN=1), INTENT(IN) :: UPLO
+    INTEGER, INTENT(IN) :: LDA, LWORK, N
+    INTEGER, INTENT(OUT) :: INFO
+    REAL(WP), INTENT(INOUT) :: A(LDA, *)
+    REAL(WP), INTENT(OUT) :: D(*), E(*)
+    REAL(WP), INTENT(OUT) :: TAU(*), WORK(LWORK)
+  END SUBROUTINE DSYTRD
+
+END INTERFACE
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+CONTAINS
+
+SUBROUTINE CSYRFS1(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB,&
+  & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR, RWORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: X(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE CSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B,&
+      & LDB, X, LDX, FERR, BERR, WORK, RWORK, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *),      &
+         & B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE CSYRFS
+  END INTERFACE
+  REAL(WP) FERR1(1), BERR1(1)
+  CALL CSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, &
+    & LDX, FERR1, BERR1, WORK, RWORK, INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE CSYRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZSYRFS1(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB,&
+  & X, LDX, FERR, BERR, WORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR, RWORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: X(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE ZSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B,&
+      & LDB, X, LDX, FERR, BERR, WORK, RWORK, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *),      &
+         & B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: X(LDX, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE ZSYRFS
+  END INTERFACE
+  REAL(WP) FERR1(1), BERR1(1)
+  CALL ZSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, &
+    & LDX, FERR1, BERR1, WORK, RWORK, INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE ZSYRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SSYRFS1(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB,&
+  & X, LDX, FERR, BERR, WORK, IWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR
+  REAL(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(*)
+  REAL(WP), INTENT(INOUT) :: X(*)
+  REAL(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE SSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B,&
+      & LDB, X, LDX, FERR, BERR, WORK, IWORK, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+      REAL(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), &
+        & B(LDB, *)
+      REAL(WP), INTENT(INOUT) :: X(LDX, *)
+      REAL(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE SSYRFS
+  END INTERFACE
+  REAL(WP) FERR1(1), BERR1(1)
+  CALL SSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, &
+    & LDX, FERR1, BERR1, WORK, IWORK, INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE SSYRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DSYRFS1(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB,&
+  & X, LDX, FERR, BERR, WORK, IWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: BERR, FERR
+  REAL(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), B(*)
+  REAL(WP), INTENT(INOUT) :: X(*)
+  REAL(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE DSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B,&
+      & LDB, X, LDX, FERR, BERR, WORK, IWORK, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO, IWORK(*)
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: BERR(*), FERR(*)
+      REAL(WP), INTENT(IN) :: A(LDA, *), AF(LDAF, *), &
+        & B(LDB, *)
+      REAL(WP), INTENT(INOUT) :: X(LDX, *)
+      REAL(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE DSYRFS
+  END INTERFACE
+  REAL(WP) FERR1(1), BERR1(1)
+  CALL DSYRFS(UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, &
+    & LDX, FERR1, BERR1, WORK, IWORK, INFO)
+  FERR = FERR1(1); BERR = BERR1(1)
+END SUBROUTINE DSYRFS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SSYTRS1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(IN) :: A(LDA, *)
+  REAL(WP), INTENT(INOUT) :: B(*)
+  INTERFACE
+    SUBROUTINE SSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(IN) :: A(LDA, *)
+      REAL(WP), INTENT(INOUT) :: B(LDB, *)
+    END SUBROUTINE SSYTRS
+  END INTERFACE
+  CALL SSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+END SUBROUTINE SSYTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DSYTRS1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(IN) :: A(LDA, *)
+  REAL(WP), INTENT(INOUT) :: B(*)
+  INTERFACE
+    SUBROUTINE DSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(IN) :: A(LDA, *)
+      REAL(WP), INTENT(INOUT) :: B(LDB, *)
+    END SUBROUTINE DSYTRS
+  END INTERFACE
+  CALL DSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+END SUBROUTINE DSYTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CSYTRS1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+  COMPLEX(WP), INTENT(INOUT) :: B(*)
+  INTERFACE
+    SUBROUTINE CSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+      COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+    END SUBROUTINE CSYTRS
+  END INTERFACE
+  CALL CSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+END SUBROUTINE CSYTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZSYTRS1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+  COMPLEX(WP), INTENT(INOUT) :: B(*)
+  INTERFACE
+    SUBROUTINE ZSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, &
+      & INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: LDA, LDB, N, NRHS
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *)
+      COMPLEX(WP), INTENT(INOUT) :: B(LDB, *)
+    END SUBROUTINE ZSYTRS
+  END INTERFACE
+  CALL ZSYTRS(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+END SUBROUTINE ZSYTRS1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SSYSV1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(INOUT) :: A(LDA, *), B(*)
+  REAL(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE SSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+        & LWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+      REAL(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE SSYSV
+  END INTERFACE
+  CALL SSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, &
+&               INFO)
+END SUBROUTINE SSYSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DSYSV1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  REAL(WP), INTENT(INOUT) :: A(LDA, *), B(*)
+  REAL(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE DSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+        & LWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      REAL(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+      REAL(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE DSYSV
+  END INTERFACE
+  CALL DSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, &
+&               INFO)
+END SUBROUTINE DSYSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CSYSV1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE CSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+        & LWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE CSYSV
+  END INTERFACE
+  CALL CSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, &
+&               INFO)
+END SUBROUTINE CSYSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZSYSV1(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+  & LWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO
+  INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(IN) :: IPIV(*)
+  COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(OUT) :: WORK(*)
+  INTERFACE
+    SUBROUTINE ZSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, &
+        & LWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO
+      INTEGER, INTENT(IN) :: NRHS, N, LDA, LDB, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(IN) :: IPIV(*)
+      COMPLEX(WP), INTENT(INOUT) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(OUT) :: WORK(*)
+    END SUBROUTINE ZSYSV
+  END INTERFACE
+  CALL ZSYSV(UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, &
+&               INFO)
+END SUBROUTINE ZSYSV1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE SSYSVX1(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  &  B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  &  LWORK, IWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: IWORK(*)
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR
+  REAL(WP), INTENT(OUT) :: X(*), WORK(*)
+  REAL(WP), INTENT(IN) :: A(LDA, *), B(*)
+  REAL(WP), INTENT(INOUT) :: AF(LDAF, *)
+  INTERFACE
+    SUBROUTINE SSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+        &  IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, &
+        &  WORK, LWORK, IWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(OUT) :: IWORK(*)
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+      REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      REAL(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+      REAL(WP), INTENT(INOUT) :: AF(LDAF, *)
+    END SUBROUTINE SSYSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL SSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+    & LDB, X, LDX, RCOND, LFERR, LBERR, WORK, LWORK, &
+    & IWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE SSYSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE DSYSVX1(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  &  B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  &  LWORK, IWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(OUT) :: IWORK(*)
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR
+  REAL(WP), INTENT(OUT) :: X(*), WORK(*)
+  REAL(WP), INTENT(IN) :: A(LDA, *), B(*)
+  REAL(WP), INTENT(INOUT) :: AF(LDAF, *)
+  INTERFACE
+    SUBROUTINE DSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+        &  IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, &
+        &  WORK, LWORK, IWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(OUT) :: IWORK(*)
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*)
+      REAL(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      REAL(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+      REAL(WP), INTENT(INOUT) :: AF(LDAF, *)
+    END SUBROUTINE DSYSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL DSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+    & LDB, X, LDX, RCOND, LFERR, LBERR, WORK, LWORK, &
+    & IWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE DSYSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE CSYSVX1(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  &  B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  &  LWORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => SP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR, RWORK(*)
+  COMPLEX(WP), INTENT(OUT) :: X(*), WORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  INTERFACE
+    SUBROUTINE CSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+        &  IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, &
+        &  WORK, LWORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => SP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+    END SUBROUTINE CSYSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL CSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+    & LDB, X, LDX, RCOND, LFERR, LBERR, WORK, LWORK, &
+    & RWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE CSYSVX1
+
+!----------------------------------------------------------------------------
+!
+!----------------------------------------------------------------------------
+
+SUBROUTINE ZSYSVX1(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, &
+  &  B, LDB, X, LDX, RCOND, FERR, BERR, WORK, &
+  &  LWORK, RWORK, INFO)
+  USE LA_PRECISION, ONLY: WP => DP
+  CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+  INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: IPIV(*)
+  REAL(WP), INTENT(OUT) :: RCOND
+  REAL(WP), INTENT(OUT) :: FERR, BERR, RWORK(*)
+  COMPLEX(WP), INTENT(OUT) :: X(*), WORK(*)
+  COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(*)
+  COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+  INTERFACE
+    SUBROUTINE ZSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+        &  IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, &
+        &  WORK, LWORK, RWORK, INFO)
+      USE LA_PRECISION, ONLY: WP => DP
+      CHARACTER(LEN=1), INTENT(IN) :: UPLO, FACT
+      INTEGER, INTENT(IN) :: LDA, LDAF, LDB, LDX, NRHS, N, LWORK
+      INTEGER, INTENT(OUT) :: INFO
+      INTEGER, INTENT(INOUT) :: IPIV(*)
+      REAL(WP), INTENT(OUT) :: RCOND
+      REAL(WP), INTENT(OUT) :: FERR(*), BERR(*), RWORK(*)
+      COMPLEX(WP), INTENT(OUT) :: X(LDX, *), WORK(*)
+      COMPLEX(WP), INTENT(IN) :: A(LDA, *), B(LDB, *)
+      COMPLEX(WP), INTENT(INOUT) :: AF(LDAF, *)
+    END SUBROUTINE ZSYSVX
+  END INTERFACE
+  REAL(WP) :: LFERR(1), LBERR(1)
+  CALL ZSYSVX(FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+    & LDB, X, LDX, RCOND, LFERR, LBERR, WORK, LWORK, &
+    & RWORK, INFO)
+  FERR = LFERR(1); BERR = LBERR(1)
+END SUBROUTINE ZSYSVX1
+
+END MODULE F77_SY_LAPACK

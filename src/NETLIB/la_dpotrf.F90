@@ -34,7 +34,7 @@ SUBROUTINE DPOTRF_F95( A, UPLO, RCOND, NORM, INFO )
 ! This is the block version of the algorithm, calling Level 3 BLAS.
 !
 ! LA_POTRF optionally estimates the reciprocal of the condition number
-! (in the 1-norm) of a real symmetric or complex Hermitian positive 
+! (in the 1-norm) of a real symmetric or complex Hermitian positive
 ! definite matrix A.
 ! An estimate is obtained for norm(inv(A)), and the reciprocal of the
 ! condition number is computed as RCOND = 1 / (norm(A) * norm(inv(A))).
@@ -59,11 +59,11 @@ SUBROUTINE DPOTRF_F95( A, UPLO, RCOND, NORM, INFO )
 ! Arguments
 ! =========
 !
-! A       (input/output) either REAL or COMPLEX square array, 
+! A       (input/output) either REAL or COMPLEX square array,
 !         shape (:,:), size(A,1) == size(A,2) >= 0.
-!         On entry, the symmetric (Hermitian) matrix A.  
+!         On entry, the symmetric (Hermitian) matrix A.
 !            If UPLO = 'U', the upper triangular part of A contains
-!               the upper triangular part of the matrix A, and the 
+!               the upper triangular part of the matrix A, and the
 !               strictly lower triangular part of A is not referenced.
 !            If UPLO = 'L', the lower triangular part of A contains
 !               the lower triangular part of the matrix A, and the
@@ -78,7 +78,7 @@ SUBROUTINE DPOTRF_F95( A, UPLO, RCOND, NORM, INFO )
 !         otherwise UPLO = 'U' is assumed.
 !
 ! RCOND   Optional (output) REAL
-!         The reciprocal of the condition number of the matrix A 
+!         The reciprocal of the condition number of the matrix A
 !         computed as RCOND = 1/(norm(A) * norm(inv(A))).
 ! NORM    Optional (input) CHARACTER*1
 !         Specifies whether the 1-norm condition number or the

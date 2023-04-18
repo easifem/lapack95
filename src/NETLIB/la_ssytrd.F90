@@ -1,31 +1,32 @@
-SUBROUTINE SSYTRD_F95( A, TAU, UPLO, INFO )
+SUBROUTINE SSYTRD_F95(A, TAU, UPLO, INFO)
 !
 !  -- LAPACK95 interface driver routine (version 3.0) --
 !     UNI-C, Denmark; Univ. of Tennessee, USA; NAG Ltd., UK
 !     September, 2000
 !
 !  .. USE STATEMENTS ..
-   USE LA_PRECISION, ONLY: WP => SP
-   USE LA_AUXMOD, ONLY: ERINFO, LSAME
-   USE F77_LAPACK, ONLY: SYTRD_F77 => LA_SYTRD, ILAENV_F77 => LA_ILAENV
+  USE LA_PRECISION, ONLY: WP => SP
+  USE LA_AUXMOD, ONLY: ERINFO, LSAME
+  USE F77_LAPACK, ONLY: SYTRD_F77 => LA_SYTRD, ILAENV_F77 => LA_ILAENV
 !  .. IMPLICIT STATEMENT ..
-   IMPLICIT NONE
+  IMPLICIT NONE
 !  .. SCALAR ARGUMENTS ..
-   CHARACTER(LEN=1), INTENT(IN), OPTIONAL :: UPLO
-   INTEGER, INTENT(OUT), OPTIONAL :: INFO
+  CHARACTER(LEN=1), INTENT(IN), OPTIONAL :: UPLO
+  INTEGER, INTENT(OUT), OPTIONAL :: INFO
 !  .. ARRAY ARGUMENTS ..
-   REAL(WP), INTENT(INOUT) :: A(:,:)
-   REAL(WP), INTENT(OUT) :: TAU(:)
+  REAL(WP), INTENT(INOUT) :: A(:, :)
+  REAL(WP), INTENT(OUT) :: TAU(:)
 !  .. LOCAL PARAMETERS ..
-   CHARACTER(LEN=8), PARAMETER :: SRNAME = 'LA_SYTRD'
-   CHARACTER(LEN=6), PARAMETER :: BSNAME = 'SSYTRD'
+  CHARACTER(LEN=8), PARAMETER :: SRNAME = 'LA_SYTRD'
+  CHARACTER(LEN=6), PARAMETER :: BSNAME = 'SSYTRD'
+
 !-----------------------------------------------------------------
 !
 ! Purpose
 ! =======
 !
-! LA_SYTRD / LA_HETRD reduces a real symmetric or complex Hermitian 
-! matrix A to real symmetric tridiagonal form T by an orthogonal 
+! LA_SYTRD / LA_HETRD reduces a real symmetric or complex Hermitian
+! matrix A to real symmetric tridiagonal form T by an orthogonal
 ! or unitary similarity transformation:
 ! Q**H * A * Q = T.
 !
@@ -50,9 +51,9 @@ SUBROUTINE SSYTRD_F95( A, TAU, UPLO, INFO )
 ! Arguments
 ! =========
 !
-! A       (input/output) either REAL or COMPLEX square array, 
+! A       (input/output) either REAL or COMPLEX square array,
 !         shape (:,:), size(A,1) == size(A,2) >= 0.
-!         On entry, the symmetric (Hermitian) matrix A.  
+!         On entry, the symmetric (Hermitian) matrix A.
 !            If UPLO = 'U', the upper triangular part of A contains
 !               the upper triangular part of the matrix A.
 !            If UPLO = 'L', the lower triangular part of A contains
@@ -63,7 +64,7 @@ SUBROUTINE SSYTRD_F95( A, TAU, UPLO, INFO )
 !               tridiagonal matrix T, and the elements above the first
 !               superdiagonal, with the array TAU, represent the unitary
 !               matrix Q as a product of elementary reflectors.
-!            If UPLO = 'L', the diagonal and first subdiagonal of A are 
+!            If UPLO = 'L', the diagonal and first subdiagonal of A are
 !               overwritten by the corresponding elements of the tridiagonal
 !               matrix T, and the elements below the first subdiagonal, with
 !               the array TAU, represent the unitary matrix Q as a product
@@ -133,34 +134,35 @@ SUBROUTINE SSYTRD_F95( A, TAU, UPLO, INFO )
 !
 ! --------------------------------------
 !  .. LOCAL SCALARS ..
-   CHARACTER(LEN=1) :: LUPLO
-   INTEGER :: LINFO, N, LD, LWORK, NB, ISTAT, ISTAT1
+  CHARACTER(LEN=1) :: LUPLO
+  INTEGER :: LINFO, N, LD, LWORK, NB, ISTAT, ISTAT1
 !  .. LOCAL ARRAYS ..
-   REAL(WP), POINTER :: WORK(:)
-   REAL(WP), POINTER :: D(:), E(:)
+  REAL(WP), POINTER :: WORK(:)
+  REAL(WP), POINTER :: D(:), E(:)
 !  .. INTRINSIC FUNCTIONS ..
-   INTRINSIC SIZE, MAX, PRESENT
+  INTRINSIC SIZE, MAX, PRESENT
 !  .. EXECUTABLE STATEMENTS ..
-   LINFO = 0; N = SIZE(A,1); LD = MAX(1,N); ISTAT = 0
-   IF( PRESENT(UPLO) ) THEN; LUPLO = UPLO; ELSE; LUPLO = 'U'; END IF
+  LINFO = 0; N = SIZE(A, 1); LD = MAX(1, N); ISTAT = 0
+  IF (PRESENT(UPLO)) THEN; LUPLO = UPLO; ELSE; LUPLO = 'U'; END IF
 !  .. TEST THE ARGUMENTS
-   IF( SIZE( A, 2 ) /= N .OR. N < 0 )THEN; LINFO = -1
-   ELSE IF( SIZE( TAU ) /= N-1 )THEN; LINFO = -2
-   ELSE IF( .NOT.LSAME(LUPLO,'U') .AND. .NOT.LSAME(LUPLO,'L') )THEN; LINFO = -3
-   ELSE IF( N > 0 )THEN
+  IF (SIZE(A, 2) /= N .OR. N < 0) THEN; LINFO = -1
+  ELSE IF (SIZE(TAU) /= N - 1) THEN; LINFO = -2
+  ELSE IF (.NOT. LSAME(LUPLO, 'U') .AND. .NOT. LSAME(LUPLO, 'L')) THEN
+    LINFO = -3
+  ELSE IF (N > 0) THEN
 !  .. DETERMINE THE WORKSPACE
-      NB = ILAENV_F77( 1, BSNAME, LUPLO, N, -1, -1, -1 )
-      IF( NB > 1 .AND. NB < N )THEN; LWORK = N*NB; ELSE; LWORK = 1; ENDIF
-      ALLOCATE(D(N), E(N-1), WORK(LWORK), STAT=ISTAT)
-      IF( ISTAT /= 0 )THEN; DEALLOCATE(D, E, WORK, STAT=ISTAT1)
-         LWORK = 1; ALLOCATE(D(N), E(N-1), WORK(LWORK), STAT=ISTAT)
-         IF( ISTAT == 0 ) CALL ERINFO( -200, SRNAME, LINFO )
-      ENDIF
-      IF( ISTAT == 0 )THEN
+    NB = ILAENV_F77(1, BSNAME, LUPLO, N, -1, -1, -1)
+    IF (NB > 1 .AND. NB < N) THEN; LWORK = N * NB; ELSE; LWORK = 1; END IF
+    ALLOCATE (D(N), E(N - 1), WORK(LWORK), STAT=ISTAT)
+    IF (ISTAT /= 0) THEN; DEALLOCATE (D, E, WORK, STAT=ISTAT1)
+      LWORK = 1; ALLOCATE (D(N), E(N - 1), WORK(LWORK), STAT=ISTAT)
+      IF (ISTAT == 0) CALL ERINFO(-200, SRNAME, LINFO)
+    END IF
+    IF (ISTAT == 0) THEN
 !        .. CALL LAPACK77 ROUTINE
-         CALL SYTRD_F77( LUPLO, N, A, LD, D, E, TAU, WORK, LWORK, LINFO )
-      ELSE; LINFO = -100; ENDIF
-      DEALLOCATE(D, E, WORK, STAT=ISTAT1)
-   ENDIF
-   CALL ERINFO(LINFO,SRNAME,INFO,ISTAT)
+      CALL SYTRD_F77(LUPLO, N, A, LD, D, E, TAU, WORK, LWORK, LINFO)
+    ELSE; LINFO = -100; END IF
+    DEALLOCATE (D, E, WORK, STAT=ISTAT1)
+  END IF
+  CALL ERINFO(LINFO, SRNAME, INFO, ISTAT)
 END SUBROUTINE SSYTRD_F95
