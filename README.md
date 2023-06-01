@@ -1,19 +1,18 @@
 # LAPACK95
 
-LAPACK95 is a Fortran95 interface to LAPACK. This repository provides a facility to build LAPACK95 by using CMake build system. This repository is build mainly for satisfying the dependencies to build [EASIFEM](www.easifem.com) library. I would recommend you to use scivision's Lapack95 library instead of this one, which is avaiable [here](https://github.com/scivision/LAPACK95).
-
-#### The HTML version of the LAPACK95 Users' Guide is now available, [here](http://www.netlib.org/lapack95/lug95/).
-#### Index of LAPACK95 routines is [here](http://www.netlib.org/lapack95/L90index/L90index.html)
-
-### Table of contents
 - [LAPACK95](#lapack95)
-      - [The HTML version of the LAPACK95 Users' Guide is now available, here.](#the-html-version-of-the-lapack95-users-guide-is-now-available-here)
-      - [Index of LAPACK95 routines is here](#index-of-lapack95-routines-is-here)
-    - [Table of contents](#table-of-contents)
+      - [The HTML version of the LAPACK95 Users' Guide is now available, [here](http://www.netlib.org/lapack95/lug95/)](#the-html-version-of-the-lapack95-users-guide-is-now-available-herehttpwwwnetliborglapack95lug95)
+      - [Index of LAPACK95 routines is [here](http://www.netlib.org/lapack95/L90index/L90index.html)](#index-of-lapack95-routines-is-herehttpwwwnetliborglapack95l90indexl90indexhtml)
   - [Build](#build)
     - [CMake](#cmake)
     - [Python](#python)
   - [Examples](#examples)
+
+LAPACK95 is a Fortran95 interface to LAPACK. This repository provides a facility to build LAPACK95 by using CMake build system. This repository is build mainly for satisfying the dependencies to build [EASIFEM](www.easifem.com) library. I would recommend you to use scivision's Lapack95 library instead of this one, which is avaiable [here](https://github.com/scivision/LAPACK95).
+
+#### The HTML version of the LAPACK95 Users' Guide is now available, [here](http://www.netlib.org/lapack95/lug95/)
+
+#### Index of LAPACK95 routines is [here](http://www.netlib.org/lapack95/L90index/L90index.html)
 
 ## Build
 
@@ -28,7 +27,7 @@ Following options are defined:
 - `-DUSE_OPENMP=ON/OFF` : to enable and disable openmp
 - `-DCMAKE_BUILD_TYPE=Release/Debug` for release or debug type build
 - `BUILD_SHARED_LIBS=ON/OFF` to build shared or static lib
-- `-DCMAKE_INSTALL_PREFIX`, location of the install directory
+- `-DCMAKE_INSTALL_PREFIX`, location of the installion directory
 
 ```sh
 git clone https://github.com/vickysharma0812/LAPACK95.git
@@ -62,7 +61,4 @@ call la_gesv(A,b)
 
 print *, b
 end program
-
-! Output (exact: 3 2 -1):
-! 2.9999999999999978        2.0000000000000018       -1.0000000000000004
 ```
