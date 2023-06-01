@@ -4,7 +4,8 @@
 #
 
 import os
-import sys
+
+# import sys
 import platform
 
 
@@ -26,7 +27,7 @@ def getOption(key, opt):
         separator = ", "
         return (
             input(
-                f"select option for {key}, possible options are : {separator.join(opt)} : "
+                f"\n Select option for {key}, possible options are : {separator.join(opt)} : "
             )
             + " "
         )
@@ -54,48 +55,49 @@ else:
     #   os.chdir(cwd)
     #   print("====================================")
 
-    user_query = False
-    if user_query:
-        cmake_def = ""
-        opt = getOption("USE_OpenMP", ["ON", "OFF"])
+    print(
+        "\n Do you want to install LAPACK95 interactively or by using default option? \n"
+    )
+
+    cmake_def = ' -G "Ninja" -D USE_OpenMP:BOOL=ON -D CMAKE_BUILD_TYPE:STRING=Release'
+    cmake_def += " -D BUILD_SHARED_LIBS:BOOL=ON  -D CMAKE_INSTALL_PREFIX:PATH=${EASIFEM_EXTPKGS} "
+    cmake_def += "-D USE_Int32:BOOL=ON -D USE_Real64:BOOL=ON"
+
+    print(f"Default options are \n {cmake_def}")
+    user_query = getOption("Interactive Install (I), Default (D) ", ["I", "[D]"])
+    print("You have typed: ", user_query)
+    build_dir = "${HOME}/temp/easifem-extpkgs/lapack95/build"
+
+    if user_query[:1] == "I":
+        build_dir = input(
+            "Path to build directory (~/temp/easifem-extpkgs/lapack95/build): "
+        )
+
+        cmake_def = ' -G "Ninja" -D USE_Int32=ON -D USE_Real64=ON'
+
+        opt = getOption("USE_OpenMP", ["[ON]", "OFF"])
         if opt == " ":
             opt = "ON"
         cmake_def += " -D USE_OpenMP=" + opt
-        #
-        #
-        #
-        opt = getOption("CMAKE_BUILD_TYPE", ["Release", "Debug"])
+
+        opt = getOption("CMAKE_BUILD_TYPE", ["[Release]", "Debug"])
         if opt == " ":
             opt = "Release"
         cmake_def += " -D CMAKE_BUILD_TYPE=" + opt
-        #
-        #
-        #
-        opt = getOption("BUILD_SHARED_LIBS", ["ON", "OFF"])
+
+        opt = getOption("BUILD_SHARED_LIBS", ["[ON]", "OFF"])
         if opt == " ":
             opt = "ON"
         cmake_def += " -D BUILD_SHARED_LIBS=" + opt
-        #
-        #
-        #
-        opt = getOption("CMAKE_INSTALL_PREFIX", ["${PREFIX}"])
+
+        print("Enter the place where you want to install LAPACK95")
+        opt = getOption("CMAKE_INSTALL_PREFIX", ["[${EASIFEM_EXTPKGS}], ${PREFIX}"])
         if opt == " ":
-            #   opt = "${HOME}/PENF"
             opt = "${EASIFEM_EXTPKGS}"
         cmake_def += " -D CMAKE_INSTALL_PREFIX=" + opt
-        #
-        #
-        #
-        cmake_def += " -D USE_Int32=ON -D USE_Real64=ON"
-        #
-        #
-        #
-    else:
-        cmake_def = ' -G "Ninja" -D USE_OpenMP:BOOL=ON -D CMAKE_BUILD_TYPE:STRING=Release -D BUILD_SHARED_LIBS:BOOL=ON  -D CMAKE_INSTALL_PREFIX:PATH=${EASIFEM_EXTPKGS} -D USE_Int32:BOOL=ON -D USE_Real64:BOOL=ON'
 
-    print("CMAKE DEF : ", cmake_def)
+    print("LAPACK95 will be configured with : ", cmake_def)
 
-    build_dir = "~/temp/easifem-extpkgs/lapack95/build"
     os.makedirs(build_dir, exist_ok=True)
     os.system(f"cmake -S ./ -B {build_dir} {cmake_def}")
     os.system(f"cmake --build {build_dir} --target install")
