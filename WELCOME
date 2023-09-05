@@ -1,0 +1,5 @@
+LAPACK95 is a Fortran95 interface to LAPACK. This repository provides a facility to build LAPACK95 by using CMake build system. This repository is build mainly for satisfying the dependencies to build [EASIFEM](www.easifem.com) library. I would recommend you to use scivision's Lapack95 library instead of this one, which is avaiable [here](https://github.com/scivision/LAPACK95).
+
+- The HTML version of the LAPACK95 Users' Guide is now available at http://www.netlib.org/lapack95/lug95/
+- The index of LAPACK95 routines is available at http://www.netlib.org/lapack95/L90index/L90index.html
+

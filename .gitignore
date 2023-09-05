@@ -29,3 +29,7 @@ exe/
 wiki/
 get_automatic_changelog.sh
 /build
+
+test-build.sh
+test-pkg.sh
+
